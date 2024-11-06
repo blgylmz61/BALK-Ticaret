@@ -1,0 +1,191 @@
+﻿@model UserViewModel
+<link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+@{
+    var userRoles = ViewBag.UserRoles;
+    var gender = ViewBag.Gender;
+}
+<div class="container p-3">
+    <form class="needs-validation" asp-action="Register" asp-controller="Account" method="post" enctype="multipart/form-data">
+        <div class="py-5 text-center">
+            <!-- Profil resmi -->
+            <a class="text-decoration-none" aria-expanded="false">
+                <img src="~/img/profileimg.png" alt="Profil Resmi" width="70" height="70" class="rounded-circle">
+            </a>
+
+            <!-- Dosya yükleme butonu -->
+            <label for="fileUpload" class="upload-icon" style="cursor: pointer;">
+                <i class="fa-solid fa-plus"></i>
+            </label>
+            <input type="file" id="fileUpload" name="UserDetailViewModel.PhotoUrl" hidden />
+
+            <h2>Kayıt Formu</h2>
+            <p class="lead">Lütfen bilgileri eksiksiz giriniz.</p>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-lg-12">
+                <h4 class="mb-3">Kullanıcı Bilgileri</h4>
+                <div class="row g-3">
+                    <!-- Kullanıcı bilgileri -->
+                    <div class="col-sm-6">
+                        <label for="Name" class="form-label">İsim</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="Surname" class="form-label">Soyisim</label>
+                        <input type="text" class="form-control" id="Surname" name="Surname" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="TcNo" class="form-label">TC Kimlik No</label>
+                        <input type="text" class="form-control" id="TcNo" name="UserDetailViewModel.TcNo" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="Phone" class="form-label">Telefon No</label>
+                        <input type="text" class="form-control" id="Phone" name="UserDetailViewModel.Phone" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="email" class="form-label">Email <span class="text-muted">(Opsiyonel)</span></label>
+                        <input type="email" class="form-control" id="email" name="Email">
+                        <div class="invalid-feedback">Lütfen geçerli bir email giriniz.</div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="Birthday" class="form-label">Doğum Tarihi</label>
+                        <input type="date" class="form-control" id="Birthday" name="UserDetailViewModel.Birthday" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="username" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-control" id="username" name="Username" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="Password" class="form-label">Şifre</label>
+                        <input type="password" class="form-control" id="Password" name="Password" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="address" class="form-label">Adres</label>
+                        <input type="text" class="form-control" id="address" name="UserDetailViewModel.Address" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="Country" class="form-label">Ülke <span class="text-muted">(Opsiyonel)</span></label>
+
+                        <select class="form-select" name="UserDetailViewModel.CountryId" required>
+
+                            <option value="">Ülke Seçiniz...</option>
+
+                            @foreach (var country in ViewBag.Countries)
+                            {
+                                <option value="@country.Id">@country.Name</option>
+
+                            }
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+
+                    </div>
+
+                    <div class="col-4">
+                        <label for="City" class="form-label">İl <span class="text-muted">(Opsiyonel)</span></label>
+                        <select class="form-select" id="cities" name="UserDetailViewModel.CityId" required>
+
+                            <option value="">Şehir Seçiniz...</option>
+
+                            @foreach (var city in ViewBag.Cities)
+                            {
+                                <option value="@city.Id">@city.Name</option>
+
+
+                            }
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+                    <div class="col-4">
+                        <label for="District" class="form-label">İlçe <span class="text-muted">(Opsiyonel)</span></label>
+                        <select class="form-select" id="districts" name="UserDetailViewModel.DistrictId" required>
+                            <option value="">İlçe Seçiniz...</option>
+
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <!-- Kullanıcı rolü seçimi -->
+                    @if (userRoles != null)
+                    {
+                        <div class="col-md-6">
+                            <label for="UserRole" class="form-label">Kullanıcı Rolü</label>
+                            <select class="form-select" id="UserRole" name="UserRoleId" required>
+                                <option value="">Kullanıcı Rolünü Seçiniz...</option>
+                                @foreach (var item in userRoles)
+                                {
+                                    <option value="@item.Id">@item.Role</option>
+                                }
+                            </select>
+                            <div class="invalid-feedback">Bu alan zorunludur.</div>
+                        </div>
+                    }
+                    <div class="col-md-6">
+                        <label for="Gender" class="form-label">Cinsiyet</label>
+                        <select class="form-select" id="GenderId" name="UserDetailViewModel.GenderId" required>
+                            <option value="">Cinsiyet seçiniz...</option>
+                            @foreach (var item in ViewBag.Genders)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="w-100 btn btn-primary btn-lg mt-3" type="submit">Kaydet</button>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#cities').change(function () {
+            var cityId = $(this).val();
+            $.ajax({
+                url: '@Url.Action("GetDistricts", "Address")',
+                type: 'GET',
+                data: { cityId: cityId },
+                dataType: 'json',
+                success: function (districts) {
+                    console.log(districts); // Gelen veriyi kontrol et
+                    var districtSelect = $('#districts');
+                    districtSelect.empty(); // Önceki verileri temizle
+                    districtSelect.append($('<option/>', {
+                        value: '',
+                        text: 'İlçe Seçiniz...'
+                    }));
+
+                    $.each(districts, function (index, district) {
+                        console.log(district); // Her bir district nesnesini kontrol et
+                        districtSelect.append($('<option/>', {
+                            value: district.id,
+                            text: district.name // Burada district.Name değerini kontrol et
+                        }));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Hata:', error); // Hata durumunda konsola yaz
+                }
+            });
+        });
+    });
+</script>

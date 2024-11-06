@@ -1,0 +1,136 @@
+﻿@model List<UserViewModel>
+<form asp-controller="Account" asp-action="Register" method="get">
+    <button class="btn float-end ms-5 me-5" type="submit">
+        <i class="fa-solid fa-plus fa-xl "></i>
+    </button>
+</form>
+<table class=" table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Ad</th>
+            <th scope="col">Soyad</th>
+            <th scope="col">Ünvan</th>
+            <th scope="col">TC.No</th>
+            <th scope="col">Cinsiyet</th>
+            <th scope="col">Telefon</th>
+            <th scope="col">Adres</th>
+            <th scope="col">İşlem</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td style="width:10%">@user.Name</td>
+                <td style="width:10%">@user.Surname</td>
+                <td style="width:10%">
+                    @{
+                        if (ViewBag.UserRoles != null)
+                        {
+                            foreach (var userRole in ViewBag.UserRoles)
+                            {
+                                if (userRole.Id == user.UserRoleId)
+                                {
+                                    @userRole.Role
+
+                                }
+                            }
+                        }
+                    }
+                </td>
+                <td style="width:2%">
+                    @{
+                        if (ViewBag.userDetails != null)
+                        {
+                            foreach (var userDetail in ViewBag.userDetails)
+                            {
+                                if (userDetail.Id == user.UserDetailId)
+                                {
+                                    @userDetail.TcNo
+
+                                }
+                            }
+                        }
+                    }
+                </td>
+                <td style="width:5%">
+
+                    @{
+                        if ((ViewBag.UserDetails != null) && (ViewBag.Genders != null))
+                        {
+                            foreach (var userDetail in ViewBag.UserDetails)
+                            {
+                                if (userDetail.Id == user?.UserDetailId)
+                                {
+                                        foreach (var gender in ViewBag.Genders)
+                                        {
+                                        if (gender.Id == userDetail.GenderId)
+                                            {
+                                                @gender.Name;
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                    }
+                </td>
+
+                <td style="width:10%">
+                    @{
+                        if (ViewBag.userDetails != null)
+                        {
+                            foreach (var userDetail in ViewBag.userDetails)
+                            {
+                                if (userDetail.Id == user?.UserDetailId)
+                                {
+                                    @userDetail.Phone
+
+                                }
+                            }
+                        }
+                    }
+
+                </td>
+
+                <td style="width:40%">
+                    @{
+                        if (ViewBag.userDetails != null)
+                        {
+                            foreach (var userDetail in ViewBag.userDetails)
+                            {
+                                if (userDetail.Id == user?.UserDetailId)
+                                {
+                                    @userDetail.Address
+
+                                }
+                            }
+                        }
+                    }
+
+                </td>
+                <td style="width:13%;">
+                    <form class="form-icon" asp-action="Create" asp-controller="User" method="get">
+                        <input name="userId" value="@user?.Id" hidden />
+                        <button class="btn btn-outline-success me-2">
+                            <i class="fa-solid fa-plus fa-xs"></i>
+                        </button>
+                    </form>
+                    <form class="form-icon" asp-action="Update" asp-controller="User" method="get">
+                        <input name="userId" value="@user?.Id" hidden />
+                        <button class="btn btn-outline-primary me-2">
+                            <i class="fa-regular fa-pen-to-square fa-xs"></i>
+                        </button>
+                    </form>
+                    <form class="form-icon" asp-action="Delete" asp-controller="User" method="post">
+                        <input name="userId" value="@user?.Id" hidden />
+                        <button class="btn btn-outline-danger me-2">
+                            <i class="fa-regular fa-trash-can fa-xs"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

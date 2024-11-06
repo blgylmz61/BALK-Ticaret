@@ -1,0 +1,262 @@
+﻿@model UserViewModel
+<link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+
+<div class="container p-3">
+    <form class="needs-validation" asp-action="Update" asp-controller="User" method="post" enctype="multipart/form-data">
+        <div class="py-5 text-center">
+            <!-- Profil resmi -->
+            <a class="text-decoration-none" aria-expanded="false">
+                <img src="~/img/@(ViewBag?.UserDetail?.Photo??"profileimg.png")" alt="Profil Resmi" width="70" height="70" class="rounded-circle">
+            </a>
+            <div class="display:inline">
+                <label for="fileUpload" id="fileUploadPhoto" class="upload-icon" style="cursor: pointer;">
+                    <i class="fa-solid fa-plus"></i>
+                </label>
+                <input type="file" id="fileUpload" name="userViewModel.userDetailViewModel.PhotoUrl"   hidden />
+                
+            </div>
+            <!-- Dosya yükleme butonu -->
+            
+
+            <h2>Kullanıcı Güncelleme Formu</h2>
+            <p class="lead">Lütfen bilgileri eksiksiz giriniz.</p>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-lg-12">
+                <h4 class="mb-3">Kullanıcı Bilgileri</h4>
+                <div class="row g-3">
+                    <!-- Kullanıcı bilgileri -->
+                    <div class="col-sm-6">
+                        <input name="userViewModel.Id" value="@Model.Id" style="width:none" hidden />
+                        <input name="userViewModel.userDetailViewModel.Id" value="@Model.UserDetailId" style="width:none" hidden />
+                        <input name="userViewModel.UserDetailId" value="@Model.UserDetailId" style="width:none" hidden />
+
+                        <label for="Name" class="form-label">İsim</label>
+                        <input type="text" class="form-control" id="Name" name="userViewModel.Name" value="@Model.Name" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="Surname" class="form-label">Soyisim</label>
+                        <input type="text" class="form-control" id="Surname" name="userViewModel.Surname" value="@Model.Surname" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="@(ViewBag.UserDetail?.TcNo??"")" class="form-label">TC Kimlik No</label>
+                        <input type="text" class="form-control" id="TcNo" name="userViewModel.userDetailViewModel.TcNo" value="@(ViewBag.UserDetail?.TcNo??"")" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="@(ViewBag.UserDetail?.Phone??"")" class="form-label">Telefon No</label>
+                        <input type="text" class="form-control" id="Phone" name="userViewModel.userDetailViewModel.Phone" value="@(ViewBag.UserDetail?.Phone??"")" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="email" class="form-label">Email <span class="text-muted">(Opsiyonel)</span></label>
+                        <input type="email" class="form-control" id="email" name="userViewModel.Email" value="@Model.Email">
+                        <div class="invalid-feedback">Lütfen geçerli bir email giriniz.</div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="Birthday" class="form-label">Doğum Tarihi</label>
+                        <input type="date"
+                               class="form-control"
+                               id="Birthday"
+                               name="userViewModel.UserDetailViewModel.Birthday"
+                               value="@(ViewBag.UserDetail?.Birthday != null ? ((DateTime)ViewBag.UserDetail.Birthday).ToString("yyyy-MM-dd") : "")"
+                               required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="username" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-control" id="username" name="userViewModel.Username" value="@Model.Username" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="Password" class="form-label">Şifre</label>
+                        <input type="password" class="form-control" id="Password" name="userViewModel.Password" value="@Model.Password" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-12">
+                        <input name="userDetailViewModel.UserId" value="@Model.Id" style="width:none" hidden />
+
+                        <label for="@(ViewBag.UserDetail?.Address??"")" class="form-label">Adres</label>
+                        <input type="text" class="form-control" id="address" name="userViewModel.userDetailViewModel.Address" value="@(ViewBag.UserDetail?.Address??" ")" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="Country" class="form-label">Ülke <span class="text-muted">(Opsiyonel)</span></label>
+
+                        <select class="form-select" name="userViewModel.UserDetailViewModel.CountryId" required>
+
+                            <option value="">Ülke Seçiniz...</option>
+
+                            @foreach (var country in ViewBag.Countries)
+                            {
+                                if ((ViewBag.UserDetail != null) && (country.Id == ViewBag.UserDetail.CountryId))
+                                {
+                                    <option value="@country.Id" selected>
+                                        @country.Name
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@country.Id">@country.Name</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+
+                    </div>
+
+                    <div class="col-4">
+                        <label for="City" class="form-label">İl <span class="text-muted">(Opsiyonel)</span></label>
+                        <select class="form-select" id="cities" name="userViewModel.UserDetailViewModel.CityId" required>
+
+                            <option value="">Şehir Seçiniz...</option>
+
+                            @foreach (var city in ViewBag.Cities)
+                            {
+                                if ((ViewBag.UserDetail != null) && (city.Id == ViewBag.UserDetail.CityId))
+                                {
+                                    <option value="@city.Id" selected>
+                                        @city.Name
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@city.Id">@city.Name</option>
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+                    <div class="col-4">
+                        <label for="District" class="form-label">İlçe <span class="text-muted">(Opsiyonel)</span></label>
+                        <select class="form-select" id="districts" name="userViewModel.UserDetailViewModel.DistrictId" required>
+                            <option value="">İlçe Seçiniz...</option>
+
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+
+                        
+                    <!-- Kullanıcı rolü seçimi -->
+
+                    <div class="col-md-6">
+                        <label for="UserRole" class="form-label">Kullanıcı Rolü</label>
+                        <select class="form-select" id="UserRoleId" name="userViewModel.UserRoleId" required>
+                            @if (ViewBag.UserRoles != null)
+                            {
+                                @foreach (var option in ViewBag.UserRoles)
+                                {
+                                    if(Model.UserRoleId==option.Id)
+                                    {
+                                        <option value="@option.Id" selected >@option.Role</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@option.Id" >@option.Role</option>
+                                    }
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Gender" class="form-label">Cinsiyet</label>
+                        <select class="form-select" id="GenderId" name="userViewModel.UserDetailViewModel.GenderId" required>
+                            @if (ViewBag.Genders != null)
+                            {
+                                @foreach (var option in ViewBag.Genders)
+                                {
+                                    if (ViewBag.UserDetail?.GenderId == option.Id)
+                                    {
+                                        <option value="@option.Id" selected >@option.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@option.Id" >@option.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="w-100 btn btn-primary btn-lg mt-3" type="submit">Kaydet</button>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        console.log ("çalışıyor")
+        var cityId = $('#cities').val(); // Mevcut cityId değerini al
+        console.log(cityId);
+        // Sayfa yüklendiğinde mevcut cityId'ye göre ilçeleri getir
+        if (cityId) {
+            loadDistricts(cityId, '@(ViewBag.UserDetail?.DistrictId ?? "")'); // İlk yüklemede cityId ve districtId'yi kullan
+        }
+
+        $('#cities').change(function () {
+            var cityId = $(this).val();
+            loadDistricts(cityId, ''); // Şehir değiştirildiğinde districtId'yi boş gönder
+        });
+
+        // İlçeleri yükleyen fonksiyon
+        function loadDistricts(cityId, selectedDistrictId) {
+            $.ajax({
+                url: '@Url.Action("GetDistricts", "Address")',
+                type: 'GET',
+                data: { cityId: cityId },
+                dataType: 'json',
+                success: function (districts) {
+                    console.log(districts); // Gelen veriyi kontrol et
+                    var districtSelect = $('#districts');
+                    districtSelect.empty(); // Önceki verileri temizle
+
+                    // İlk seçenek olarak "İlçe Seçiniz..." ekle
+                    districtSelect.append($('<option/>', {
+                        value: '',
+                        text: 'İlçe Seçiniz...'
+                    }));
+
+                    // Districtleri ekle
+                    $.each(districts, function (index, district) {
+                        console.log(district); // Her bir district nesnesini kontrol et
+
+                        var option = $('<option/>', {
+                            value: district.id,
+                            text: district.name
+                        });
+
+                        // Eğer district.id, selectedDistrictId ile eşleşiyorsa, selected yap
+                        if (district.id == selectedDistrictId) {
+                            option.prop('selected', true);
+                        }
+
+                        // Option'u select elementine ekle
+                        districtSelect.append(option);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Hata:', error); // Hata durumunda konsola yaz
+                }
+            });
+        }
+    });
+
+</script>
+
+
+

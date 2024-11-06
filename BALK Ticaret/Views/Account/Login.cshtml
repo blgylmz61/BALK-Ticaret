@@ -1,0 +1,65 @@
+﻿@model UserViewModel
+<link href="/css/signin.css" rel="stylesheet">
+<style>
+ 
+ 
+
+</style>
+@{
+    var loggedUserId = Context.Session.GetInt32("UserId");
+  
+    var UserRole = Context.Session.GetInt32("UserRoleId");
+
+}
+
+
+
+@if (ViewBag.Hata != null)
+{
+    <div id="alertMessage" class="alert alert-danger">
+        @ViewBag.Hata
+    </div>
+}
+
+
+<main class="form-signin">
+    <form asp-action="Login" asp-controller="Account" method="post">
+        <div class="header" style="text-align:center">
+            <h2 class="h2 mb-5 fw-normal">
+                <i class="fa-brands fa-slack fa-2xl" id="Logo" style="color:darkslateblue"> KRC </i>
+            </h2>
+            <h6 class="h6 mb-3 fw-normal">Lütfen Giriş Yapınız.</h6>
+
+        </div>
+
+        <div class="form-floating">
+            <input type="text" name="Username" class="form-control" id="floatingInput" placeholder="Lütfen Kullanıcı Adınızı Giriniz.">
+            <label for="floatingInput">Email Adresi</label>
+
+            <span asp-validation-for="Username" class="text-danger"></span>
+
+        </div>
+        <div class="form-floating">
+            <input type="password" name="Password" class="form-control" id="floatingPassword" placeholder="Lütfen Şifrenizi Giriniz.">
+            <label for="floatingPassword">Şifre</label>
+
+            <span asp-validation-for="Password" class="text-danger"></span>
+
+        </div>
+
+        @*  <div class="checkbox mb-3">
+        <label>
+        <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        </div> *@
+        <button class="w-100 btn btn-lg btn-primary" asp-action="Login" asp-controller="Account" type="submit">Giriş Yap</button>
+
+        <p class="mt-5 mb-3 text-muted">
+            Henüz üye değilseniz
+            <a class="" asp-area="" asp-controller="Account" asp-action="Register"> Kayıt olun  </a>
+
+        </p>
+    </form>
+</main>
+
+}

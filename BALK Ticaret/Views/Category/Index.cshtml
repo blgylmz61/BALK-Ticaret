@@ -1,0 +1,52 @@
+﻿@model List<CategoryViewModel>
+@{
+    int i = 0;
+}
+<table class=" table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">S.N.</th>
+            <th scope="col">Kategori</th>
+            <th scope="col">İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        <form asp-controller="Category" asp-action="Create" method="get">
+            <button class="btn float-end ms-5 me-5">
+                <i class="fa-solid fa-plus fa-xl "></i>
+            </button>
+        </form>
+        @foreach (var item in Model)
+        {
+            i++;
+            <tr>
+                <td style="width:2%">@i</td>
+                <td style="width:78%">@item.Name</td>
+                
+                <td style="width:20%; ">
+                    <form class="form-icon " asp-action="Create" asp-controller="Category" method="get">
+                        <input name="categoryId" value="@item.Id" style="width:none" hidden />
+                        <button class="btn  btn-outline-success me-2">
+                            <i class="fa-solid fa-plus fa-xs "></i>
+
+                        </button>
+                    </form>
+                    <form class="form-icon " asp-action="Update" asp-controller="Category" method="get">
+                        <input name="categoryId" value="@item.Id" style="width:none" hidden />
+                        <button class="btn  btn-outline-primary me-2 ">
+                            <i class="fa-regular fa-pen-to-square fa-xs"></i>
+                        </button>
+                    </form>
+                    <form class="form-icon  " asp-action="Delete" asp-controller="Category" method="post">
+                        <input name="categoryId" value="@item.Id" style="width:none" hidden />
+                        <button class="btn  btn-outline-danger me-2 ">
+
+                            <i class="fa-regular fa-trash-can fa-xs "></i>
+                        </button>
+                    </form>
+
+
+            </tr>
+        }
+    </tbody>
+</table>

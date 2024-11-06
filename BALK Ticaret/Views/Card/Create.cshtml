@@ -1,0 +1,67 @@
+﻿<link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+
+
+    <div class="container col-md-6 mt-5">
+        <h2 class="text-center">Kredi Kartı Bilgisi Kaydetme</h2>
+        <form asp-action="create" asp-controller="Card" method="post" class="needs-validation" novalidate>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="cardHolder" class="form-label">Kart Sahibi Adı</label>
+                    <input type="text" class="form-control" id="cardHolder" name="cardHolder" placeholder="Kart sahibi adı" required>
+                    <div class="invalid-feedback">
+                        Lütfen kart sahibi adını girin.
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="cardNumber" class="form-label">Kart Numarası</label>
+                    <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Kart numarası" required pattern="\d{16}">
+                    <div class="invalid-feedback">
+                        Lütfen geçerli bir kart numarası girin (16 rakam).
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="expiryDate" class="form-label">Son Kullanma Tarihi</label>
+                    <input type="month" class="form-control" id="expiryDate" name="expiryDate" required>
+                    <div class="invalid-feedback">
+                        Lütfen geçerli bir son kullanma tarihi seçin.
+                    </div>
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+                    <label for="cvv" class="form-label">CVV (Güvenlik Kodu)</label>
+                    <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV" required pattern="\d{3}">
+                    <div class="invalid-feedback">
+                        Lütfen geçerli bir CVV girin (3 rakam).
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary btn-lg">Kaydet</button>
+            </div>
+        </form>
+    </div>
+
+        <script>
+        // Form doğrulama işlemleri
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+

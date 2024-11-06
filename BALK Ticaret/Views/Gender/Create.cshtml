@@ -1,0 +1,27 @@
+﻿@model GenderViewModel
+<link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+
+<div class="container d-flex justify-content-center  min-vh-100">
+    <form class="needs-validation" asp-action="Create" asp-controller="Gender" method="post" enctype="multipart/form-data">
+        <div class=" py-3 text-center">
+            <h2>Cinsiyet Kayıt Formu</h2>
+            <p class="lead">Lütfen bilgileri eksiksiz giriniz.</p>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-lg-12 col-sm-6">
+                <h4 class="mb-3">Cinsiyet Bilgileri</h4>
+                <div class="row g-3">
+                    <!-- Gender bilgileri -->
+                    <div class="col-sm-6 col-lg-12">
+                        <label for="Name" class="form-label">Cinsiyet Türü</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required>
+                        <div class="invalid-feedback">Bu alan zorunludur.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="w-100 btn btn-primary btn-lg mt-3 col-lg-12 col-sm-6" type="submit">Kaydet</button>
+    </form>
+</div>

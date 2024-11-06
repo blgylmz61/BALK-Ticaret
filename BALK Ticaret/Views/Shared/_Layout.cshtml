@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - KRC-Ticaret</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/offcanvas.css" />
+    <!-- jQuery Kütüphanesini Yükle -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+@{
+    var loggedUserId = Context.Session.GetInt32("UserId");
+    var isAdminString = Context.Session.GetString("IsAdmin");
+    bool isAdmin = bool.Parse(isAdminString ?? "false");
+}
+
+<body class="bg-light" id="LayoutBody">
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation" id="mainNavbar">
+        <div class="container-fluid">
+
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" asp-area="" asp-controller="Home" asp-action="Index" id="Logo">
+                <i class="fa-brands fa-slack fa-xl"> KRC </i>
+            </a>
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#">Anasayfa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Hakkımızda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">İletişim</a></li>
+                    @if (isAdmin)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Admin">Yönetici Paneli</a>
+                        </li>
+                    }
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control form-control-dark me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success me-2" type="submit">Search</button>
+                    @if (loggedUserId != null)
+                    {
+                        <div class="btn-group dropstart ">
+                            <div class="d-flex flex-column align-items-center justify-content-center flex-shrink-0 bg-dark ms-3 me-3" style="width: 2rem; height:2rem;">
+                                <div class="dropdown  d-flex align-items-center justify-content-center ">
+                                    @if (TempData["UserPhoto"] != null)
+                                    {
+                                        <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="~/img/@TempData["UserPhoto"]" alt="" width="30" height="30" class="rounded-circle">
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="~/img/profileimg.png" alt="" width="30" height="30" class="rounded-circle">
+                                        </a>
+                                    }
+                                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser3">
+                                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profil</a></li>
+                                        @if (isAdmin)
+                                        {
+                                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Admin">Yönetici Sayfası</a></li>
+                                        }
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Çıkış</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <button type="submit" asp-action="Login" asp-controller="Account" class="btn btn-outline-light me-2">Giriş</button>
+                        <button type="submit" asp-action="Register" asp-controller="Account" class="btn btn-warning">Kayıt</button>
+                    }
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid content" id="content">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2024 - BALK_Ticaret - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/js/offcanvas.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/sidebars.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

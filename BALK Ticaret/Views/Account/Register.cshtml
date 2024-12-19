@@ -16,7 +16,7 @@
             <label for="fileUpload" class="upload-icon" style="cursor: pointer;">
                 <i class="fa-solid fa-plus"></i>
             </label>
-            <input type="file" id="fileUpload" name="UserDetailViewModel.PhotoUrl" hidden />
+            <input type="file" id="fileUpload" name="userViewModel.UserDetail.PhotoUrl" hidden />
 
             <h2>Kayıt Formu</h2>
             <p class="lead">Lütfen bilgileri eksiksiz giriniz.</p>
@@ -29,62 +29,62 @@
                     <!-- Kullanıcı bilgileri -->
                     <div class="col-sm-6">
                         <label for="Name" class="form-label">İsim</label>
-                        <input type="text" class="form-control" id="Name" name="Name" required>
+                        <input type="text" class="form-control" id="Name" name="userViewModel.Name" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-sm-6">
                         <label for="Surname" class="form-label">Soyisim</label>
-                        <input type="text" class="form-control" id="Surname" name="Surname" required>
+                        <input type="text" class="form-control" id="Surname" name="userViewModel.Surname" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-sm-6">
                         <label for="TcNo" class="form-label">TC Kimlik No</label>
-                        <input type="text" class="form-control" id="TcNo" name="UserDetailViewModel.TcNo" required>
+                        <input type="text" class="form-control" id="TcNo" name="userViewModel.UserDetail.TcNo" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-sm-6">
                         <label for="Phone" class="form-label">Telefon No</label>
-                        <input type="text" class="form-control" id="Phone" name="UserDetailViewModel.Phone" required>
+                        <input type="text" class="form-control" id="Phone" name="userViewModel.UserDetail.Phone" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-6">
                         <label for="email" class="form-label">Email <span class="text-muted">(Opsiyonel)</span></label>
-                        <input type="email" class="form-control" id="email" name="Email">
+                        <input type="email" class="form-control" id="email" name="userViewModel.Email">
                         <div class="invalid-feedback">Lütfen geçerli bir email giriniz.</div>
                     </div>
 
                     <div class="col-6">
                         <label for="Birthday" class="form-label">Doğum Tarihi</label>
-                        <input type="date" class="form-control" id="Birthday" name="UserDetailViewModel.Birthday" required>
+                        <input type="date" class="form-control" id="Birthday" name="userViewModel.UserDetail.Birthday" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-6">
                         <label for="username" class="form-label">Kullanıcı Adı</label>
-                        <input type="text" class="form-control" id="username" name="Username" required>
+                        <input type="text" class="form-control" id="username" name="userViewModel.Username" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-6">
                         <label for="Password" class="form-label">Şifre</label>
-                        <input type="password" class="form-control" id="Password" name="Password" required>
+                        <input type="password" class="form-control" id="Password" name="userViewModel.Password" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-12">
                         <label for="address" class="form-label">Adres</label>
-                        <input type="text" class="form-control" id="address" name="UserDetailViewModel.Address" required>
+                        <input type="text" class="form-control" id="address" name="userViewModel.UserDetail.Address" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-4">
                         <label for="Country" class="form-label">Ülke <span class="text-muted">(Opsiyonel)</span></label>
 
-                        <select class="form-select" name="UserDetailViewModel.CountryId" required>
+                        <select class="form-select" name="userViewModel.UserDetail.CountryId" required>
 
                             <option value="">Ülke Seçiniz...</option>
 
@@ -100,7 +100,7 @@
 
                     <div class="col-4">
                         <label for="City" class="form-label">İl <span class="text-muted">(Opsiyonel)</span></label>
-                        <select class="form-select" id="cities" name="UserDetailViewModel.CityId" required>
+                        <select class="form-select" id="cities" name="userViewModel.UserDetail.CityId" required>
 
                             <option value="">Şehir Seçiniz...</option>
 
@@ -115,7 +115,7 @@
                     </div>
                     <div class="col-4">
                         <label for="District" class="form-label">İlçe <span class="text-muted">(Opsiyonel)</span></label>
-                        <select class="form-select" id="districts" name="UserDetailViewModel.DistrictId" required>
+                        <select class="form-select" id="districts" name="userViewModel.UserDetail.DistrictId" required>
                             <option value="">İlçe Seçiniz...</option>
 
                         </select>
@@ -127,7 +127,7 @@
                     {
                         <div class="col-md-6">
                             <label for="UserRole" class="form-label">Kullanıcı Rolü</label>
-                            <select class="form-select" id="UserRole" name="UserRoleId" required>
+                            <select class="form-select" id="UserRole" name="userViewModel.UserRoleId" required>
                                 <option value="">Kullanıcı Rolünü Seçiniz...</option>
                                 @foreach (var item in userRoles)
                                 {
@@ -139,7 +139,7 @@
                     }
                     <div class="col-md-6">
                         <label for="Gender" class="form-label">Cinsiyet</label>
-                        <select class="form-select" id="GenderId" name="UserDetailViewModel.GenderId" required>
+                        <select class="form-select" id="GenderId" name="userViewModel.UserDetail.GenderId" required>
                             <option value="">Cinsiyet seçiniz...</option>
                             @foreach (var item in ViewBag.Genders)
                             {
@@ -161,7 +161,7 @@
         $('#cities').change(function () {
             var cityId = $(this).val();
             $.ajax({
-                url: '@Url.Action("GetDistricts", "Address")',
+                url: '@Url.Action("GetDistricts", "Location")',
                 type: 'GET',
                 data: { cityId: cityId },
                 dataType: 'json',

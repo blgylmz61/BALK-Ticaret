@@ -18,7 +18,9 @@ namespace BLL.AbstractServices
         Task DeleteProduct(int productId); //ürün sil
         Task UpdateProduct(ProductDto productDto); //ürün Güncelle
         Task<List<ProductDto>> Search(string searchedTerm); //Arama 
-        Task<ProductDto> GetProductWithDetail(int productDetailId);
+        Task<ProductDto> GetProductWithDetail(int productId);
+        Task<List<ProductDto>> GetAllProductWithDetail();
+      
 
 
     }

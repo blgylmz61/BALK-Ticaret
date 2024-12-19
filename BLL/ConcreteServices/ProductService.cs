@@ -17,17 +17,21 @@ namespace BLL.ConcreteServices
     {
         private readonly IRepository<Product> _productRepository;
         private readonly IMapper _mapper;
+        private readonly IRepository<User> _userRepository;
+        private readonly IRepository<ProductLike> _productLikeRepository;
 
-        public ProductService(IRepository<Product> productRepository, IMapper mapper)
+        public ProductService(IRepository<Product> productRepository, IMapper mapper,IRepository<User> userRepository,IRepository<ProductLike> productLikeRepository)
         {
             _productRepository = productRepository;
             _mapper = mapper;
+            _userRepository = userRepository;
+            _productLikeRepository = productLikeRepository;
         }
         public async Task<bool> CheckProduct(string productcode)
         {
             if (productcode != null)
             {
-                var products = await _productRepository.FindAsync(x => x.ProductCode == productcode);
+                var products = await _productRepository.FindAsync(x => x.Code == productcode);
                 if (products != null) { return true; }
             }
             return false;
@@ -48,6 +52,8 @@ namespace BLL.ConcreteServices
         public async Task<List<ProductDto>> GetAllProducts()
         {
             var products = await _productRepository.GetAllAsync();
+            
+
             return (_mapper.Map<List<ProductDto>>(products));
         }
 
@@ -70,15 +76,62 @@ namespace BLL.ConcreteServices
             throw new NotImplementedException();
         }
 
-        public Task UpdateProduct(ProductDto productDto)
+        public async Task UpdateProduct(ProductDto productDto)
         {
-            throw new NotImplementedException();
+            var product = await _productRepository.GetByIdAsync(productDto.Id);
+            if (product == null)
+            {
+                throw new Exception("Ürün bulunamadı");
+            }
+            product.Name = StringHelper.CapitalizeFirstLetterOfEachWord(productDto.Name);
+            product.Photos = productDto.Photos;
+            product.Description = productDto.Description;
+            product.UnitPriceM2 = productDto.UnitPriceM2;
+            product.M2 = productDto.M2;
+            product.Ada = productDto.Ada;
+            product.Parcel = productDto.Parcel;
+            product.CategoryId = productDto.CategoryId;
+            product.ProductDetailId = productDto.ProductDetailId;
+            await _productRepository.UpdateAsync(product);
+
         }
 
-        public async Task<ProductDto> GetProductWithDetail(int productDetailId)
+        public async Task<ProductDto> GetProductWithDetail(int productId)
         {
-            var product = await _productRepository.GetWithIncludeAsync(x => x.ProductDetailId == productDetailId, p => p.ProductDetail);
+            var product = await _productRepository.GetWithIncludeAsync(
+                x => x.Id == productId,
+               p => p.ProductDetail,
+                 p => p.Category,
+                 p => p.ProductDetail.Country,
+                 p => p.ProductDetail.City,
+                 p => p.ProductDetail.District,
+                 p => p.ProductDetail.Neighborhood);
+            
             return (_mapper.Map<ProductDto>(product));
         }
+
+        public async Task<List<ProductDto>> GetAllProductWithDetail()
+        {
+            var products = await _productRepository.GetAllWithIncludeAsync(x => true,
+               p => p.ProductDetail,
+                 p => p.Category,
+                 p => p.ProductDetail.Country,
+                 p => p.ProductDetail.City,
+                 p => p.ProductDetail.District,
+                 p => p.ProductDetail.Neighborhood);
+            foreach (var product in products)
+            {
+                product.Name = StringHelper.CapitalizeFirstLetterOfEachWord(product.Name);
+                product.ProductDetail.Neighborhood.Name = StringHelper.CapitalizeFirstLetterOfEachWord(product.ProductDetail.Neighborhood.Name);
+                product.ProductDetail.Neighborhood.District.Name = StringHelper.CapitalizeFirstLetterOfEachWord(product.ProductDetail.Neighborhood.District.Name);
+                product.ProductDetail.Neighborhood.District.City.Name = StringHelper.CapitalizeFirstLetterOfEachWord(product.ProductDetail.Neighborhood.District.City.Name);
+                product.ProductDetail.Neighborhood.District.City.Country.Name = StringHelper.CapitalizeFirstLetterOfEachWord(product.ProductDetail.Neighborhood.District.City.Country.Name);
+                product.Description = StringHelper.CapitalizeFirstLetterOfEachWord(product?.Description);
+
+            }
+            return (_mapper.Map<List<ProductDto>>(products));
+        }
+
+       
     }
 }

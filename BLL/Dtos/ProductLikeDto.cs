@@ -10,8 +10,10 @@ namespace BLL.Dtos
     public class ProductLikeDto : BaseEntityDto
     {
         public int ProductId { get; set; }
-        public ProductDto ProductDto { get; set; }
+        public ProductDto? Product { get; set; }
+        public bool IsLike { get; set; }
+
         public int UserId { get; set; }
-        public UserDto UserDto { get; set; }
+        public UserDto? User { get; set; }
     }
 }

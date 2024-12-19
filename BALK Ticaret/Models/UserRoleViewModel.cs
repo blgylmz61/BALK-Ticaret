@@ -6,6 +6,6 @@ namespace BALK_Ticaret.Models
     {
         public string Role { get; set; }
         public string Description { get; set; }
-        public List<UserViewModel> UserViewModels { get; set; }
+        public List<UserViewModel> Users { get; set; }
     }
 }

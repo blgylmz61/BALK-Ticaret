@@ -11,7 +11,6 @@ namespace BLL.AbstractServices
     public interface ICardService
     {
         Task<bool> CheckCard(string cardNumber); //Card codu kontrolu
-        Task<string> CapitalizeFirstLetterOfEachWord(string text); //ilk harf buyuk diğer harfleri kuçuk yap
         Task<CardDto> GetCardId(int cardId); //Tek card getir
         Task CreateCard(CardDto cardDto); //card oluştur
         Task<List<CardDto>> GetAllCard(); //bütün card getir

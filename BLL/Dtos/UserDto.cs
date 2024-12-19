@@ -16,12 +16,12 @@ namespace BLL.Dtos
         public string Username { get; set; }
         public int UserRoleId { get; set; }
         public int UserDetailId { get; set; }
-        public UserRoleDto UserRoleDto { get; set; }
-        public UserDetailDto UserDetailDto { get; set; }
-        public List<ProductLikeDto> ProductLikeDtos { get; set; }
+        public UserRoleDto? UserRole { get; set; }
+        public UserDetailDto ?UserDetail { get; set; }
+        public List<ProductLikeDto> ProductLikes { get; set; }
         public Cart Cart { get; set; }
-        public List<OrderDto> OrderDtos { get; set; }
-        public List<CardDto> CardDtos { get; set; }
+        public List<OrderDto> Orders { get; set; }
+        public List<CardDto> Cards { get; set; }
 
     }
 }

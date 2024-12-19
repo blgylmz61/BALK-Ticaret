@@ -6,7 +6,7 @@ namespace BALK_Ticaret.Models
     public class OrderItemViewModel:BaseEntityViewModel
     {
         public int OrderId { get; set; }                 // Sipariş kimliği
-        public OrderViewModel OrderViewModel { get; set; }// Sipariş ile ilişki
+        public OrderViewModel Order { get; set; }// Sipariş ile ilişki
 
         public int ProductId { get; set; }
         public decimal Price { get; set; }

@@ -9,6 +9,6 @@ namespace BLL.Dtos
     public class GenderDto:BaseEntityDto
     {
         public string Name { get; set; }
-        public UserDetailDto UserDetailDto { get; set; }
+        public UserDetailDto UserDetail { get; set; }
     }
 }

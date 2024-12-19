@@ -10,7 +10,7 @@ namespace BLL.Dtos
     public class CartDto:BaseEntity
     {
         public int UserId { get; set; }
-        public UserDto UserDto { get; set; }
-        public List<CartItemDto> CartItemDtos { get; set; }
+        public UserDto User { get; set; }
+        public List<CartItemDto> CartItems { get; set; }
     }
 }

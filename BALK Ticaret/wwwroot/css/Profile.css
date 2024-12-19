@@ -9550,7 +9550,7 @@ section.u-image,
 .u-container-layout {
     position: relative;
     flex: 1;
-    max-width: 100%;
+    max-width: 80%;
 }
 
     .u-inner-container-layout,

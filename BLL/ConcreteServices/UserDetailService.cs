@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.AbstractServices;
 using BLL.Dtos;
+using BLL.Helpers;
 using DAL.AbstractRepository;
 using DAL.Entites;
 using System;
@@ -26,6 +27,17 @@ namespace BLL.ConcreteServices
         {
             await _userDetailRepository.AddAsync(_mapper.Map<UserDetail>(userDetailDto));
         }
+        public async Task<List<UserDetailDto>> GetAllUserDetailWithDetails()
+        {
+            var userDetails = await _userDetailRepository.GetAllWithIncludeAsync(x =>true, p => p.City, p => p.Country, p => p.District, p => p.Gender);
+            return _mapper.Map<List<UserDetailDto>>(userDetails);
+        }
+
+        public async Task<UserDetailDto> GetUserDetailWithDetails(int userDetailId)
+        {
+            var userDetail = await _userDetailRepository.GetWithIncludeAsync(x => x.Id == userDetailId, p => p.City, p => p.Country, p => p.District, p => p.Gender);
+            return _mapper.Map<UserDetailDto>(userDetail);
+        }
 
         public async Task DeleteUserDetail(int userDetailId)
         {
@@ -40,7 +52,11 @@ namespace BLL.ConcreteServices
 
         public async Task<UserDetailDto> GetUserDetailById(int userDetailId)
         {
-            var userDetail = await _userDetailRepository.GetByIdAsync(userDetailId);
+            var userDetail = await _userDetailRepository.GetWithIncludeAsync(x => x.Id == userDetailId, p => p.City, p => p.Country, p => p.District, p => p.Gender);
+            userDetail.Country.Name = StringHelper.CapitalizeFirstLetterOfEachWord(userDetail.Country.Name);
+            userDetail.City.Name = StringHelper.CapitalizeFirstLetterOfEachWord(userDetail.City.Name);
+            userDetail.District.Name = StringHelper.CapitalizeFirstLetterOfEachWord(userDetail.District.Name);
+
             return _mapper.Map<UserDetailDto>(userDetail);
         }
 
@@ -48,7 +64,7 @@ namespace BLL.ConcreteServices
         {
             var userDetail = await _userDetailRepository.GetByIdAsync(userDetailDto.Id);
             userDetail.Birthday = userDetailDto.Birthday;
-            userDetail.Address = userDetailDto.Address;
+            userDetail.Address =StringHelper.CapitalizeFirstLetterOfEachWord( userDetailDto.Address);
             userDetail.Phone = userDetailDto.Phone;
             userDetail.TcNo = userDetailDto.TcNo;
             userDetail.Photo = userDetailDto.Photo;
@@ -56,6 +72,7 @@ namespace BLL.ConcreteServices
             userDetail.CountryId = userDetailDto.CountryId;
             userDetail.CityId = userDetailDto.CityId;
             userDetail.DistrictId = userDetailDto.DistrictId;
+            await _userDetailRepository.UpdateAsync(userDetail);
         }
 
         public async Task<bool> CheckTcNo(string TcNo)
@@ -77,10 +94,5 @@ namespace BLL.ConcreteServices
             return _mapper.Map<IEnumerable<UserDetailDto>>(userDetails);
         }
 
-               public async Task<UserDetailDto> GetUserDetailWithDetails(int userDetailId)
-        {
-            var userDetail = await _userDetailRepository.GetWithIncludeAsync(x => x.Id == userDetailId, p => p.City, p => p.Country, p => p.District, p => p.Gender);
-            return _mapper.Map<UserDetailDto>(userDetail);
-        }
     }
 }

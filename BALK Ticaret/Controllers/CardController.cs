@@ -20,17 +20,19 @@ namespace BALK_Ticaret.Controllers
         {
             return View();
         }
-        public IActionResult Create()
+        public IActionResult Create(int userId)
         {
+            ViewBag.UserId = userId;
             return View();
         }
         [HttpPost]
-        public IActionResult Create(CardViewModel cardViewModel,int userId)
+        public async Task<IActionResult> Create(CardViewModel cardViewModel,int userId)
         {
             if (cardViewModel != null) { 
                 cardViewModel.UserId = userId;
                 var cardDto=_mapper.Map<CardDto>(cardViewModel);
-                return View("Profile", "Account");
+                await _cardService.CreateCard(cardDto);
+                return RedirectToAction("Profile", "Account");
             }
             else
             {
@@ -38,5 +40,6 @@ namespace BALK_Ticaret.Controllers
             }
             
         }
+
     }
 }

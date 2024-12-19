@@ -7,7 +7,7 @@ namespace BALK_Ticaret.Models
         public string TwoCode { get; set; }
         public string Name { get; set; }
         public string PhoneCode { get; set; }
-        public List<CityViewModel>? CityViewModels { get; set; }
+        public List<CityViewModel>? Citys { get; set; }
 
     }
 }

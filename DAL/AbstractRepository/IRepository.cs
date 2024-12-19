@@ -18,6 +18,8 @@ namespace DAL.AbstractRepository
         Task DeleteAsync(int id);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task<T>GetWithIncludeAsync(Expression<Func<T, bool>> predicate,params Expression<Func<T, object>>[]includes);
- 
+        Task<List<T>> GetAllWithIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
+
+
     }
 }

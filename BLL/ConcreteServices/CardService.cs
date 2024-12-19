@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.AbstractServices;
 using BLL.Dtos;
+using BLL.Helpers;
 using DAL.AbstractRepository;
 using DAL.Entites;
 using System;
@@ -22,22 +23,7 @@ namespace BLL.ConcreteServices
             _cardRepository = cardRepository;
             _mapper = mapper;
         }
-        public async Task<string> CapitalizeFirstLetterOfEachWord(string text)
-        {
-            return await Task.Run(() =>
-            {
-                var textTrim = text.TrimStart();
-                var words = textTrim.Split(' ');
-                for (int i = 0; i < words.Length; i++)
-                {
-                    if (words[i].Length > 0)
-                    {
-                        words[i] = char.ToUpper(words[i][0]) + words[i].Substring(1).ToLower();
-                    }
-                }
-                return string.Join(" ", words);
-            });
-        }
+       
 
         public async Task<bool> CheckCard(string cardNumber)
         {
@@ -63,6 +49,9 @@ namespace BLL.ConcreteServices
         public async Task<List<CardDto>> GetAllCard()
         {
            var cards=await _cardRepository.GetAllAsync();
+            foreach (var card in cards) { 
+            card.CardHolder=StringHelper.CapitalizeFirstLetterOfEachWord(card.CardHolder);
+            }
             return _mapper.Map<List<CardDto>>(cards);
         }
 

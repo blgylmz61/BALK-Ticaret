@@ -21,7 +21,9 @@ namespace BLL.AbstractServices
         Task UpdateUser(UserDto userDto); //Kullanıcı Güncelle
         Task<List<UserDto>> Search(string searchedTerm); //Arama 
         Task<IEnumerable<UserDto>> GetUsersByConditionAsync(Expression<Func<UserDto, bool>> predicate);
-        Task<UserDto> GetUserWithDetail(int userDetailId);
+        Task<UserDto> GetUserWithDetail(int userId);
+        Task<List<UserDto>> GetAllUserWithDetail();
+
 
 
 

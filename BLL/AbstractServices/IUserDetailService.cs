@@ -18,6 +18,8 @@ namespace BLL.AbstractServices
         Task<bool> CheckTcNo(string TcNo); //TcNo Kontrolu
        Task<IEnumerable<UserDetailDto>>GetUserDetailByConditionAsync(Expression<Func<UserDetailDto,bool>>predicate);
         Task<UserDetailDto> GetUserDetailWithDetails(int userDetailId);
+        Task<List<UserDetailDto>> GetAllUserDetailWithDetails();
+
 
 
 

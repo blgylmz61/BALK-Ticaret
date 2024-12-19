@@ -6,11 +6,11 @@ namespace BALK_Ticaret.Models
     {
         public DateTime OrderDate { get; set; }
         public int UserId { get; set; }
-        public UserViewModel UserViewModel { get; set; }
-        public BillViewModel BillViewModel { get; set; }
+        public UserViewModel User { get; set; }
+        public BillViewModel Bill { get; set; }
 
-        public List<PaymentViewModel> PaymentViewModels { get; set; }
-        public List<OrderItemViewModel> OrderItemViewModels { get; set; }
+        public List<PaymentViewModel> Payments { get; set; }
+        public List<OrderItemViewModel> OrderItems { get; set; }
         public decimal TotalAmount { get; set; }
 
     }

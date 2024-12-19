@@ -6,7 +6,7 @@ namespace BALK_Ticaret.Models
     {
         public string Name { get; set; }
 
-        public List<ProductViewModel>? ProductViewModels { get; set; }
+        public List<ProductViewModel>? Products { get; set; }
 
 
 

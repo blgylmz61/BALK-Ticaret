@@ -12,5 +12,6 @@ namespace DAL.Entites
         public string Name { get; set; }
         public string PhoneCode { get; set; }
         public List<City> Cities { get; set; }
+
     }
 }

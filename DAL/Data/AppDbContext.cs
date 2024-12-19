@@ -32,6 +32,8 @@ namespace DAL.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Card> Cards { get; set; }
+        public DbSet<Neighborhood> Neighborhoods { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,6 +57,20 @@ namespace DAL.Data
                Username = "blgkrc61",
                UserRoleId = 1
            });
+            modelBuilder.Entity<Category>().HasData(
+                new Category
+                {
+                    Id=1,
+                    Name = "Arsa",
+                },new Category
+                {
+                    Id = 2,
+                    Name = "Konut",
+                }, new Category
+                {
+                    Id = 3,
+                    Name = "İşyeri",
+                });
             modelBuilder.Entity<ProductDetail>()
             .HasOne(pd => pd.Country)
             .WithMany() // Country içinde ProductDetail koleksiyonu yok
@@ -119,11 +135,8 @@ namespace DAL.Data
                 .HasForeignKey(pd => pd.DistrictId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
+            
         }
-
-
-
 
     }
 }

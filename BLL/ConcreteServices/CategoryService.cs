@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.AbstractServices;
 using BLL.Dtos;
+using BLL.Helpers;
 using DAL.AbstractRepository;
 using DAL.Entites;
 using System;
@@ -23,7 +24,8 @@ namespace BLL.ConcreteServices
         }
         public async Task CreateCategory(CategoryDto categoryDto)
         {
-            await _categoryRepository.AddAsync(_mapper.Map<Category>(categoryDto));
+            categoryDto.Name=StringHelper.CapitalizeFirstLetterOfEachWord(categoryDto.Name);
+            await _categoryRepository.AddAsync((_mapper.Map<Category>(categoryDto)));
         }
 
         public async Task DeleteCategory(int categoryId)
@@ -46,8 +48,9 @@ namespace BLL.ConcreteServices
         public async Task UpdateCategory(CategoryDto categoryDto)
         {
             var category=await _categoryRepository.GetByIdAsync(categoryDto.Id);
-            category.Name = categoryDto.Name;
-            await _categoryRepository.UpdateAsync(category);
+            category.Name =StringHelper.CapitalizeFirstLetterOfEachWord( categoryDto.Name);
+            var Category=_mapper.Map<Category>(category);
+            await _categoryRepository.UpdateAsync(Category);
         }
     }
 }

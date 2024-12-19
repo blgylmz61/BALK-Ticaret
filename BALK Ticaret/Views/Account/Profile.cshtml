@@ -31,15 +31,15 @@
     <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
         <div class="u-layout">
             <div class="u-layout-row">
-                <div class="u-container-style u-align-center u-layout-cell u-size-20 u-layout-cell-1">
+                <div class="u-container-style justify-content-center u-align-center u-layout-cell u-size-20 u-layout-cell-1" style="align-items:center; justify-items:center">
                     <div class="u-container-layout u-container-layout-1">
                         <h4 class="u-text u-text-6">Kullanıcı Bilgileri</h4>
                         <p class="u-text u-text-7">
                             <span style="font-weight: 700;"> TC.Kimlik No: </span><br>
-                            @Model?.UserDetailViewModel?.TcNo <br>
+                            @Model.UserDetail.TcNo <br>
 
                             <span style="font-weight: 700;"> Telefon: </span><br>
-                            @Model?.UserDetailViewModel?.Phone <br>
+                            @Model.UserDetail.Phone <br>
 
                             <span style="font-weight: 700;"> Email: </span><br>
                             @Model?.Email <br>
@@ -53,63 +53,83 @@
                     </div>
                 </div>
 
-                <div class="u-align-center-md u-align-left-sm u-align-left-xs u-container-style u-layout-cell u-size-20 u-layout-cell-2">
+                <div class="u-align-center-md justify-content-center u-align-center-sm u-align-center-xs u-container-style u-layout-cell u-size-20 u-layout-cell-2" style="align-items:center; justify-items:center">
                     <div class="u-container-layout u-valign-middle-lg u-valign-middle-xl u-valign-top-md u-valign-top-sm u-valign-top-xs u-container-layout-2">
-                        <img src="~/img/@(Model?.UserDetailViewModel?.Photo ?? "profileimg.png")" alt="" class="u-image u-image-circle u-image-1" data-image-width="700" data-image-height="700">
+                        <img src="~/img/@(Model?.UserDetail?.Photo ?? "profileimg.png")" alt="" class="u-image u-image-circle u-image-1" data-image-width="400" data-image-height="400">
                     </div>
                 </div>
 
-                <div class="u-container-style u-align-center u-layout-cell u-size-20 u-layout-cell-3">
+                <div class="u-container-style justify-content-center u-align-center u-layout-cell u-size-20 u-layout-cell-3" style="align-items:center; justify-items:center">
                     <div class="u-container-layout u-container-layout-3">
                         <h4 class="u-text u-text-6">Detaylar</h4>
                         <p class="u-text u-text-7">
                             <span style="font-weight: 700;"> Doğum Tarihi: </span><br>
-                            @Model?.UserDetailViewModel?.Birthday.ToString("yyyy-MM-dd") <br>
+                            @Model?.UserDetail?.Birthday.ToString("yyyy-MM-dd") <br>
 
                             <span style="font-weight: 700;"> Cinsiyet: </span><br>
-                            @Model?.UserDetailViewModel?.Gender?.Name <br>
+                            @Model?.UserDetail?.Gender?.Name <br>
 
                             <span style="font-weight: 700;"> Adres: </span><br>
-                            @Model?.UserDetailViewModel?.Address @Model?.UserDetailViewModel?.DistrictViewModel?.Name
-                            @Model?.UserDetailViewModel?.CityViewModel?.Name @Model?.UserDetailViewModel?.CountryViewModel?.Name<br>
+                            @Model?.UserDetail?.Address <br />
+                            @Model?.UserDetail?.District?.Name
+                            @Model?.UserDetail?.City?.Name @Model?.UserDetail?.Country?.Name<br>
                         </p>
-                        @if (!isAdmin)
-                        {
-                            <div style="justify-content:flex-end">
+                        <div class="u-social-icons u-spacing-10 u-social-icons-1 mt-5" style="justify-content:flex-end;">
+                            <form class="form-icon u-social-url" asp-action="Update" asp-controller="User" method="get">
+                                <input name="userId" value="@Model?.Id" hidden />
+                                <button class="btn btn-outline-primary me-2">
+                                    <i class="fa-regular fa-pen-to-square fa-xs"></i>Güncelle
+                                </button>
+                            </form>
+                            @if (!isAdmin)
+                            {
+                                <div style="justify-content:flex-end">
 
-                                <span style="font-weight: 700;">
-                                    Kart Bilgileri:
-                                    <form class="form-icon d-inline" asp-action="Create" asp-controller="Card" method="get">
-                                        <input name="userId" value="@Model?.Id" hidden />
-                                        <button class="btn btn-outline-success ml-2">
-                                            <i class="fa-solid fa-plus fa-xs"></i>
-                                        </button>
-                                    </form>
-                                </span>
-                                <br>
+                                    <span style="font-weight: 700;">
+                                        Kart Bilgileri:
+                                        <form class="form-icon d-inline " asp-action="Create" asp-controller="Card" method="get">
+                                            <input name="userId" value="@Model?.Id" hidden />
+                                            <button class="btn btn-outline-success ml-2" style="border:none;">
+                                                <i class="fa-solid fa-plus fa-xl"></i>
+                                            </button>
+                                        </form>
+                                    </span>
+                                    <br>
+                                    <p style="text-align:left;">
+                                        @if (Model?.Cards != null)
+                                        {
+                                            @foreach (var card in Model?.Cards)
+                                            {
+                                                <span>
+                                                    @{
+                                                        string cardInfo = card.CardHolder + " " + card.CardNumber;
+                                                        @cardInfo
+                                                    }
+                                                    <br />
+                                                </span>
 
-                                <br>
-                                @Model?.UserDetailViewModel?.Address <br /> @Model?.UserDetailViewModel?.DistrictViewModel?.Name
-                                @Model?.UserDetailViewModel?.CityViewModel?.Name @Model?.UserDetailViewModel?.CountryViewModel?.Name
-
-                                <br>
-
-
-                                <div class="u-social-icons u-spacing-10 u-social-icons-1" style="justify-content:flex-end;">
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                                <div class="u-social-icons u-spacing-10 u-social-icons-1 mt-3" style="justify-content:flex-end;">
                                     <form class="form-icon u-social-url" asp-action="Update" asp-controller="User" method="get">
                                         <input name="userId" value="@Model?.Id" hidden />
                                         <button class="btn btn-outline-primary me-2">
-                                            <i class="fa-regular fa-pen-to-square fa-xs"></i>
+                                            <i class="fa-regular fa-pen-to-square fa-xs"></i>Güncelle
                                         </button>
                                     </form>
 
                                     <button class="btn btn-outline-danger me-2" id="showConfirmButton">
-                                        <i class="fa-regular fa-trash-can fa-xs"></i>
+                                        <i class="fa-regular fa-trash-can fa-xs"></i>Sil
                                     </button>
                                 </div>
-                            </div>
 
-                        }
+
+                            }
+
+
+                        </div>
                     </div>
                 </div>
             </div>

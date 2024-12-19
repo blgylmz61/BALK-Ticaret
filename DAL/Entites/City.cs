@@ -12,6 +12,7 @@ namespace DAL.Entites
         public int CountryId { get; set; }
         public Country Country { get; set; }
 
-        public List<District> Districts { get; set; }
+        public List<District>? Districts { get; set; }
+
     }
 }

@@ -16,6 +16,7 @@ namespace BLL.AbstractServices
         Task<ProductDetailDto> GetProductDetailById(int productDetailId);
         Task<List<ProductDetailDto>> GetProductDetailAll();
         Task<IEnumerable<ProductDetailDto>> GetProductDetailByConditionAsync(Expression<Func<ProductDetailDto, bool>> predicate);
+        Task<ProductDetailDto> GetProductDetailWithDetails(int productDetailId);
 
     }
 }

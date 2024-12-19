@@ -10,7 +10,6 @@ namespace BLL.Dtos
     public class CartItemDto:BaseEntityDto
     {
         public int ProductId { get; set; }                     // Ürün kimliği
-      
         public decimal UnitPrice { get; set; }                 // Ürün birim fiyatı
         public int CartId { get; set; }
         public CartDto CartDto { get; set; }

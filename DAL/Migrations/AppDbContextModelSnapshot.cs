@@ -165,6 +165,23 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Arsa"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Konut"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "İşyeri"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entites.City", b =>
@@ -196,6 +213,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CommentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -303,6 +323,28 @@ namespace DAL.Migrations
                     b.ToTable("Logs");
                 });
 
+            modelBuilder.Entity("DAL.Entites.Neighborhood", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
+
+                    b.ToTable("Neighborhoods");
+                });
+
             modelBuilder.Entity("DAL.Entites.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -395,15 +437,21 @@ namespace DAL.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Code")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsSold")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("M2")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("LikeCount")
+                        .HasColumnType("int");
+
+                    b.Property<double>("M2")
+                        .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -412,11 +460,7 @@ namespace DAL.Migrations
                     b.Property<int>("Parcel")
                         .HasColumnType("int");
 
-                    b.Property<string>("Photo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductCode")
+                    b.Property<string>("Photos")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -447,22 +491,40 @@ namespace DAL.Migrations
                     b.Property<string>("Apartmennt")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CityId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CountryId")
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DaireNo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("DaireNo")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("DistrictId")
+                    b.Property<double>("Deposit")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DistrictId")
                         .HasColumnType("int");
 
                     b.Property<string>("Flat")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MaturityOptions")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NeighborhoodId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PeriodicIncrease")
+                        .HasColumnType("float");
+
                     b.Property<string>("Site")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoningPlan")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -472,6 +534,8 @@ namespace DAL.Migrations
                     b.HasIndex("CountryId");
 
                     b.HasIndex("DistrictId");
+
+                    b.HasIndex("NeighborhoodId");
 
                     b.ToTable("ProductDetails");
                 });
@@ -483,6 +547,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsLike")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -752,6 +819,17 @@ namespace DAL.Migrations
                     b.Navigation("City");
                 });
 
+            modelBuilder.Entity("DAL.Entites.Neighborhood", b =>
+                {
+                    b.HasOne("DAL.Entites.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("District");
+                });
+
             modelBuilder.Entity("DAL.Entites.Order", b =>
                 {
                     b.HasOne("DAL.Entites.User", "User")
@@ -809,23 +887,32 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Entites.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("DAL.Entites.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("DAL.Entites.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entites.Neighborhood", "Neighborhood")
+                        .WithMany()
+                        .HasForeignKey("NeighborhoodId");
 
                     b.Navigation("City");
 
                     b.Navigation("Country");
 
                     b.Navigation("District");
+
+                    b.Navigation("Neighborhood");
                 });
 
             modelBuilder.Entity("DAL.Entites.ProductLike", b =>

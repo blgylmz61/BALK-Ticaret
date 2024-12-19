@@ -10,8 +10,7 @@ namespace BLL.Dtos
     public class PaymentDto
     {
         public int OrderId { get; set; }
-        public OrderDto OrderDto { get; set; }                  // Ödeme-Sipariş ilişkisi
-
+        public OrderDto Order { get; set; }                  // Ödeme-Sipariş ilişkisi
         public decimal Amount { get; set; }               // Ödeme tutarı
         public DateTime PaymentDate { get; set; }         // Ödeme tarihi
     }

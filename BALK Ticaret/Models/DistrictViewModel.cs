@@ -6,6 +6,7 @@ namespace BALK_Ticaret.Models
     {
         public string Name { get; set; }
         public int CityId { get; set; }
-        public CityViewModel? CityViewModel { get; set; }
+        public CityViewModel? City { get; set; }
+
     }
 }

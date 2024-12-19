@@ -24,94 +24,14 @@
             <tr>
                 <td style="width:10%">@user.Name</td>
                 <td style="width:10%">@user.Surname</td>
-                <td style="width:10%">
-                    @{
-                        if (ViewBag.UserRoles != null)
-                        {
-                            foreach (var userRole in ViewBag.UserRoles)
-                            {
-                                if (userRole.Id == user.UserRoleId)
-                                {
-                                    @userRole.Role
-
-                                }
-                            }
-                        }
-                    }
-                </td>
-                <td style="width:2%">
-                    @{
-                        if (ViewBag.userDetails != null)
-                        {
-                            foreach (var userDetail in ViewBag.userDetails)
-                            {
-                                if (userDetail.Id == user.UserDetailId)
-                                {
-                                    @userDetail.TcNo
-
-                                }
-                            }
-                        }
-                    }
-                </td>
-                <td style="width:5%">
-
-                    @{
-                        if ((ViewBag.UserDetails != null) && (ViewBag.Genders != null))
-                        {
-                            foreach (var userDetail in ViewBag.UserDetails)
-                            {
-                                if (userDetail.Id == user?.UserDetailId)
-                                {
-                                        foreach (var gender in ViewBag.Genders)
-                                        {
-                                        if (gender.Id == userDetail.GenderId)
-                                            {
-                                                @gender.Name;
-                                            }
-                                        }
-                                }
-                            }
-                        }
-                    }
-                </td>
-
-                <td style="width:10%">
-                    @{
-                        if (ViewBag.userDetails != null)
-                        {
-                            foreach (var userDetail in ViewBag.userDetails)
-                            {
-                                if (userDetail.Id == user?.UserDetailId)
-                                {
-                                    @userDetail.Phone
-
-                                }
-                            }
-                        }
-                    }
-
-                </td>
-
-                <td style="width:40%">
-                    @{
-                        if (ViewBag.userDetails != null)
-                        {
-                            foreach (var userDetail in ViewBag.userDetails)
-                            {
-                                if (userDetail.Id == user?.UserDetailId)
-                                {
-                                    @userDetail.Address
-
-                                }
-                            }
-                        }
-                    }
-
-                </td>
+                <td style="width:10%">@user.UserRole.Role</td>
+                <td style="width:2%">@user.UserDetail?.TcNo </td>
+                <td style="width:5%">@user.UserDetail?.Gender?.Name </td>
+                <td style="width:10%">@user.UserDetail?.Phone</td>
+                <td style="width:40%">@user.UserDetail?.Address</td>
                 <td style="width:13%;">
-                    <form class="form-icon" asp-action="Create" asp-controller="User" method="get">
-                        <input name="userId" value="@user?.Id" hidden />
+                    <form class="form-icon" asp-action="Register" asp-controller="Account" method="get">
+                        
                         <button class="btn btn-outline-success me-2">
                             <i class="fa-solid fa-plus fa-xs"></i>
                         </button>

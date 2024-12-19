@@ -11,6 +11,7 @@ namespace BLL.Dtos
     {
         public string Name { get; set; }
         public int? CityId { get; set; }
-        public CityDto? CityDto { get; set; }
+        public CityDto? City { get; set; }
+
     }
 }

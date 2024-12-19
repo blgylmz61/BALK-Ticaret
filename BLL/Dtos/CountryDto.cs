@@ -12,7 +12,7 @@ namespace BLL.Dtos
         public string TwoCode { get; set; }
         public string Name { get; set; }
         public string PhoneCode { get; set; }
-        public List<CityDto> CityDtos { get; set; }
+        public List<CityDto> Citys { get; set; }
 
     }
 }

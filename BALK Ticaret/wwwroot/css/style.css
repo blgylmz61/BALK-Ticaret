@@ -173,20 +173,68 @@ a {
 }
 
 .btn-primary {
-    --bs-btn-color: #7239EA;
-    --bs-btn-bg: #8C907E;
-    --bs-btn-border-color: #6610f2;
-    --bs-btn-hover-color: #5014D0;
-    --bs-btn-hover-bg: #2d2d5e;
-    --bs-btn-hover-border-color: #5e624e;
-    --bs-btn-focus-shadow-rgb: 80, 20, 208;
-    --bs-btn-active-color: #5014D4;
-    --bs-btn-active-bg: #5014D4;
-    --bs-btn-active-border-color: #5014D4;
-    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #fff;
-    --bs-btn-disabled-bg: #6610f2;
-    --bs-btn-disabled-border-color: #6610f2;
+    --bs-btn-color: #fff !important;
+    --bs-btn-bg: #5014D0 !important;
+    --bs-btn-border-color: #6610f2 !important;
+    --bs-btn-hover-color: #fff !important;
+    --bs-btn-hover-bg: #2d2d5e !important;
+    --bs-btn-hover-border-color: #2d2d5e !important;
+    --bs-btn-focus-shadow-rgb: 80, 20, 208 !important;
+    --bs-btn-active-color: #fff !important;
+    --bs-btn-active-bg: #5014D4 !important;
+    --bs-btn-active-border-color: #2d2d5e !important;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+    --bs-btn-disabled-color: #fff !important;
+    --bs-btn-disabled-bg: #6610f2 !important;
+    --bs-btn-disabled-border-color: #6610f2 !important;
+}
+.btn-success {
+    --bs-btn-color: #fff !important;
+    --bs-btn-bg: #5014D0 !important;
+    --bs-btn-border-color: #6610f2 !important;
+    --bs-btn-hover-color: #fff !important;
+    --bs-btn-hover-bg: #2d2d5e !important;
+    --bs-btn-hover-border-color: #2d2d5e !important;
+    --bs-btn-focus-shadow-rgb: 80, 20, 208 !important;
+    --bs-btn-active-color: #fff !important;
+    --bs-btn-active-bg: #5014D4 !important;
+    --bs-btn-active-border-color: #2d2d5e !important;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+    --bs-btn-disabled-color: #fff !important;
+    --bs-btn-disabled-bg: #6610f2 !important;
+    --bs-btn-disabled-border-color: #6610f2 !important;
+}
+.btn-outline-primary {
+    --bs-btn-color: #5014D0 !important;
+    --bs-btn-border-color: #2d2d5e !important;
+    --bs-btn-hover-color: #fff !important;
+    --bs-btn-hover-bg: #5014D0 !important;
+    --bs-btn-hover-border-color: #2d2d5e !important;
+    --bs-btn-focus-shadow-rgb: 80, 20, 208 !important;
+    --bs-btn-active-color: #fff !important;
+    --bs-btn-active-bg: #5014D4 !important;
+    --bs-btn-active-border-color: #2d2d5e !important;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+    --bs-btn-disabled-color: #6610f2 !important;
+    --bs-btn-disabled-bg: transparent !important;
+    --bs-btn-disabled-border-color: #2d2d5e !important;
+    --bs-gradient: none !important;
+}
+.btn-outline-success {
+    --bs-btn-color: #5014D0 !important;
+    --bs-btn-border-color: #2d2d5e !important;
+    --bs-btn-hover-color: #fff !important;
+    --bs-btn-hover-bg: #5014D0 !important;
+    --bs-btn-hover-border-color: #2d2d5e !important;
+    --bs-btn-focus-shadow-rgb: 80, 20, 208 !important;
+    --bs-btn-active-color: #fff !important;
+    --bs-btn-active-bg: #5014D4 !important;
+    --bs-btn-active-border-color: #2d2d5e !important;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+    --bs-btn-disabled-color: #6610f2 !important;
+    --bs-btn-disabled-bg: transparent !important;
+    --bs-btn-disabled-border-color: #2d2d5e !important;
+    --bs-gradient: none !important;
 }
 
 .pagination {
@@ -626,8 +674,7 @@ a {
 }
 .search-popup.is-visible {
   opacity: 1;
-  visibility: visible;
-  cursor: -webkit-image-set(url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23FFF' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E") 1x, url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23000' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E") 2x), pointer;
+ 
   cursor: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23000' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E"), pointer;
   -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
   -moz-transition: opacity 0.3s 0s, visibility 0s 0s;

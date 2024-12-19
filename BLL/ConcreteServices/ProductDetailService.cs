@@ -51,10 +51,33 @@ namespace BLL.ConcreteServices
             return _mapper.Map<ProductDetailDto>(productDetail);
         }
 
-
-        public Task UpdateProductDetail(ProductDetailDto productDetailDto)
+        public async Task<ProductDetailDto> GetProductDetailWithDetails(int productDetailId)
         {
-            throw new NotImplementedException();
+            var productDetail = await _productDetailRepository.GetWithIncludeAsync(x => x.Id == productDetailId, p => p.Country, p => p.City, p => p.District,p=>p.Neighborhood);
+            return _mapper.Map<ProductDetailDto>(productDetail);
+        }
+
+        public async Task UpdateProductDetail(ProductDetailDto productDetailDto)
+        {
+            var productDetail = await _productDetailRepository.GetByIdAsync(productDetailDto.Id);
+            if (productDetail == null)
+            {
+                throw new Exception("Ürün bulunamadı");
+            }
+            productDetail.Site = productDetailDto.Site;
+            productDetail.Flat = productDetailDto.Flat;
+            productDetail.Apartmennt = productDetailDto.Apartmennt;
+            productDetail.Type = productDetailDto.Type;
+            productDetail.ZoningPlan = productDetailDto.ZoningPlan;
+            productDetail.PeriodicIncrease = productDetailDto.PeriodicIncrease;
+            productDetail.MaturityOptions = productDetailDto.MaturityOptions;
+            productDetail.Deposit = productDetailDto.Deposit;
+            productDetail.DaireNo = productDetailDto.DaireNo;
+            productDetail.CountryId = productDetailDto.CountryId;
+            productDetail.CityId = productDetailDto.CityId;
+            productDetail.DistrictId = productDetailDto.DistrictId;
+            productDetail.NeighborhoodId = productDetailDto.NeighborhoodId;
+            await _productDetailRepository.UpdateAsync(_mapper.Map<ProductDetail>(productDetail));
         }
     }
 }

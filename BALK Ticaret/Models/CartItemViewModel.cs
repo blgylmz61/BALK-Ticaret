@@ -9,7 +9,7 @@ namespace BALK_Ticaret.Models
 
         public decimal UnitPrice { get; set; }                 // Ürün birim fiyatı
         public int CartId { get; set; }
-        public CartViewModel CartViewModel { get; set; }
+        public CartViewModel Cart { get; set; }
 
     }
 }

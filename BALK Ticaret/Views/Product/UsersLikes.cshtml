@@ -1,0 +1,35 @@
+﻿@model List<ProductViewModel>
+
+@if (Model != null)
+{
+    
+    @foreach (var product in Model)
+    {
+        <div class="row featurette">
+            <div class="col-md-7">
+
+                <h2 class="mt-3">@product?.ProductDetail?.Neighborhood?.District?.City?.Name <span class="text-muted">@product?.Category.Name</span></h2>
+                <p class="lead">@product?.Name</p>
+                <p class="lead">@product?.Description</p>
+                <p>
+                    <a class="btn btn-secondary" href="#">Detaylar »</a>
+
+                </p>
+
+            </div>
+            <div class="col-md-5">
+                <a asp-action="Detail" asp-controller="Product">
+                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="400" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 250x250" preserveAspectRatio="xMidYMid slice" fill="none" focusable="false">
+                        @if (product?.Photos?.FirstOrDefault() != null)
+                        {
+                            <image href="@product.Photos.First()" width="400" height="400" />
+                        }
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+
+        <hr class="mt-2">
+    }       
+}

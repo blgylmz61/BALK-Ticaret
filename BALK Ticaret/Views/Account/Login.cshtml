@@ -1,27 +1,16 @@
 ﻿@model UserViewModel
 <link href="/css/signin.css" rel="stylesheet">
-<style>
- 
- 
 
-</style>
 @{
     var loggedUserId = Context.Session.GetInt32("UserId");
-  
     var UserRole = Context.Session.GetInt32("UserRoleId");
-
 }
-
-
-
 @if (ViewBag.Hata != null)
 {
     <div id="alertMessage" class="alert alert-danger">
         @ViewBag.Hata
     </div>
 }
-
-
 <main class="form-signin">
     <form asp-action="Login" asp-controller="Account" method="post">
         <div class="header" style="text-align:center">
@@ -35,14 +24,12 @@
         <div class="form-floating">
             <input type="text" name="Username" class="form-control" id="floatingInput" placeholder="Lütfen Kullanıcı Adınızı Giriniz.">
             <label for="floatingInput">Email Adresi</label>
-
             <span asp-validation-for="Username" class="text-danger"></span>
 
         </div>
         <div class="form-floating">
             <input type="password" name="Password" class="form-control" id="floatingPassword" placeholder="Lütfen Şifrenizi Giriniz.">
             <label for="floatingPassword">Şifre</label>
-
             <span asp-validation-for="Password" class="text-danger"></span>
 
         </div>

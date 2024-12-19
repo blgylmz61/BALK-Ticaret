@@ -66,6 +66,16 @@ namespace DAL.ConcerteRepository
             }
             return await query.FirstOrDefaultAsync(predicate);
         }
+        public async Task<List<T>> GetAllWithIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _context.Set<T>();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.Where(predicate).ToListAsync();
+        }
 
         public async Task UpdateAsync(T entity)
         {

@@ -3,6 +3,6 @@
     public class GenderViewModel:BaseEntityViewModel
     {
         public string Name { get; set; }
-        public UserDetailViewModel ?UserDetailViewModel { get; set; }
+        public UserDetailViewModel ?UserDetail { get; set; }
     }
 }

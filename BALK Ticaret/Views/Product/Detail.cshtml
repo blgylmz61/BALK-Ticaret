@@ -1,0 +1,185 @@
+﻿@model ProductViewModel
+
+<style>
+    .carousel-inner {
+        height: 75vh; /* Sayfanın yarısı kadar yüksekliği ayarla */
+        width: 50vh;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .carousel-item img {
+        object-fit: cover; /* Görselin, alanı doldurmasını sağlar */
+        height: 75vh; /* Yüksekliği tamamen kaplar */
+        width: 25vh; /* Genişliği tamamen kaplar */
+    }
+
+
+
+
+    .shadow-effect {
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* X, Y, Bulanıklık, Renk */
+        border-radius: 8px; /* Köşeleri yuvarlama, isteğe bağlı */
+        transition: box-shadow 0.3s ease; /* Geçiş efekti */
+    }
+
+        .shadow-effect:hover {
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5); /* Hover durumunda daha belirgin gölge */
+        }
+
+    .carousel {
+        margin-top: 5px;
+    }
+
+    .carousel-control-prev {
+        margin-left: 1vh !important;
+        right: unset !important;
+    }
+
+    .carousel-control-next {
+        margin-left: 25vh !important;
+        right: unset !important;
+    }
+
+    label p {
+        display: inline;
+        margin: 1px,1px,0,1px;
+        
+    }
+</style>
+
+<div class="row container mt-2 ">
+    <div class="col-md-4 order-md-2" style="align-content:center; justify-items:center">
+        <div id="carouselExample" class="carousel slide col-5" data-bs-ride="carousel">
+            <div class="carousel-inner shadow-effect">
+                @if (Model.Photos != null && Model.Photos.Count > 0)
+                {
+                    int index = 0;
+                    foreach (var photo in Model.Photos)
+                    {
+                        // İlk fotoğrafı aktif yap
+                        var activeClass = index == 0 ? "active" : "";
+
+                        <div class="carousel-item @activeClass">
+                            <img src="@photo" class="d-block w-100" alt="...">
+                        </div>
+
+                        index++;
+                    }
+                }
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+
+    </div>
+    <div class="col-md-8 ">
+        <div class="row">
+
+            <p class="text-center text-uppercase fs-2 fw-bold">@Model.Name</p>
+            <hr class="m-1" />
+        </div>
+
+        <div class="row">
+            <p class="text-center text-capitalize fs-5 fw-light ">ÜrünKodu:@Model.Code</p>
+            <p class="text-center text-capitalize fs-4 fw-normal ">
+                @Model?.ProductDetail?.Neighborhood?.District?.City?.Country?.Name /
+                @Model?.ProductDetail?.Neighborhood?.District?.City?.Name/
+                @Model?.ProductDetail?.Neighborhood?.District?.Name/
+                @Model?.ProductDetail?.Neighborhood?.Name
+            </p>
+            <p class="text-center text-capitalize fs-4 fw-normal ">
+                @Model?.Ada Ada -@Model?.Parcel Parsel
+            </p>
+
+            @{
+                var totalPrice = Model?.UnitPriceM2 * (decimal)Model?.M2;
+            }
+            <p class="text-center text-capitalize fs-4 fw-normal ">@Model.M2.ToString("N0") m2- @Model.UnitPriceM2.ToString("C")</p>
+            <p class="text-center text-capitalize fs-3 fw-bold ">@totalPrice?.ToString("C")</p>
+            <p class="text-center  fs-4 fw-normal ">Açıklama: @Model.Description </p>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <input id="Category" name="categoryId" value="@Model.CategoryId" hidden />
+
+    <p class="text-center text-uppercase fs-2 fw-bold">Detaylar</p>
+
+
+    <!-- Kategoriye göre dinamik form alanları -->
+    <div class="row" id="Category1" style="display:none">
+
+        <p class="text-center text-capitalize fs-4 fw-normal ">@Model.ProductDetail.ZoningPlan</p>
+
+        <p class="text-center text-capitalize fs-4 fw-normal ">@Model.ProductDetail.Type</p>
+    </div>
+    @* Konut *@
+    <div class="row" id="Category2" style="display:none">
+
+        <p class="text-center text-capitalize fs-4 fw-normal ">@Model.ProductDetail.Site Sitesi</p>
+        <p class="text-center text-capitalize fs-4 fw-normal ">@Model.ProductDetail.Type </p>
+        <p class="text-center text-capitalize fs-4 fw-normal ">@Model.ProductDetail.Apartmennt Blok -@Model.ProductDetail.Flat .Kat -Daire @Model.ProductDetail.DaireNo</p>
+    
+
+                      
+    </div>
+    @* işyeri *@
+    <div class="row" id="Category3" style="display:none">
+        <p class="text-center text-capitalize fs-4 fw-normal ">@Model.ProductDetail.Type</p>
+        <p class="text-center text-capitalize fs-4 fw-normal ">@Model.ProductDetail.Apartmennt Blok -@Model.ProductDetail.Flat .Kat -İş Yeri No: @Model.ProductDetail.DaireNo</p>
+
+       
+               
+    </div>
+    <p class="text-center text-capitalize fs-4 fw-normal ">@Model.ProductDetail.Deposit Peşinat</p>
+
+    <p class="text-center text-nowrap bd-highlight text-capitalize fs-4 fw-normal " style="width: 100%;"> @Model.ProductDetail.PeriodicIncrease Yıllık Artış % - @Model.ProductDetail.MaturityOptions Ay Vade İmkanıyla! </p>
+
+
+        <div class=" justify-content-end">
+            <form class="form-icon m-2" asp-action="Add" asp-controller="Cart" method="post">
+                <button class=" btn btn-primary  mt-3" type="submit">Sepete Ekle</button>
+
+            </form>
+        <form class="form-icon m-2" asp-action="Index" asp-controller="Home" method="get">
+                <button class=" btn btn-primary  mt-3" type="submit">Geri</button>
+
+            </form>
+        </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+       // Category change handler
+    let categoryId = document.getElementById('Category').value;
+           console.log(categoryId);
+
+           $('#Category1').hide();
+           $('#Category2').hide();
+           $('#Category3').hide();
+
+           if (categoryId == 1) {
+               $('#Category1').show();
+           } else if (categoryId == 2) {
+               $('#Category2').show();
+           } else if (categoryId == 3) {
+               $('#Category3').show();
+           }
+       });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

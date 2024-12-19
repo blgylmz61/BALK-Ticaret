@@ -1,2 +1,627 @@
-﻿@model List<ProductViewModel>
+﻿@using Newtonsoft.Json
+@model List<ProductViewModel>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/rating.css" />
 <link rel="stylesheet" href="~/css/carousel.css" />
+<style>
+    /* Görsel kapsayıcı */
+    .image-container {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        display: inline-block;
+    }
+
+    /* Görsel */
+    .product-image {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Like formunun görsel üzerinde konumlandırılması */
+    .like-form {
+        position: absolute;
+        top: 20px; /* Görselin üst kısmından mesafe */
+        right: 20px; /* Görselin sağ kısmından mesafe */
+        z-index: 10;
+    }
+
+    /* Like butonu */
+    .like-button {
+        background: rgba(255, 255, 255, 0.8); /* Şeffaf beyaz arka plan */
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+    }
+
+        /* Like ikonu */
+        .like-button i {
+            font-size: 20px;
+        }
+
+    /* Beğenilmiş durumdaki ikon */
+    .liked i {
+        color: #7239EA;
+    }
+
+    /* Normal ikon */
+    .like-button i {
+        color: #7239EA;
+    }
+
+    /* Beğeni sayısı */
+    .like-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+        color: #7239EA;
+        font-size: 12px;
+        padding: 2px 6px;
+        border-radius: 50%;
+        font-weight: bold;
+        /* border: 1px solid #7239EA; */
+        border: none;
+    }
+
+    .like-button:hover i {
+        color: white; /* Hover durumunda rakamın rengi */
+    }
+
+    .like-button:hover {
+        background-color: rgba(114, 57, 234, 0.5);
+    }
+
+        .like-button:hover .like-count {
+            color: white;
+            background-color: rgba(114, 57, 234, 0.5);
+        }
+
+    tr form {
+        display: inline;
+    }
+
+    .AllProducts-image {
+        height: 100%;
+        width: 100%;
+        box-shadow: 0 4px 15px rgba(none, 0.8);
+        background-color: none !important;
+        border-radius: 10px;
+    }
+
+</style>
+
+@{
+
+    var loggedUserId = Context.Session.GetInt32("UserId");
+    var loggedUserName = Context.Session.GetString("Name");
+    var likedProducts = ViewBag.LikedProducts as List<ProductLikeViewModel>;
+    var Comments = ViewBag.Comments as List<CommentViewModel>;
+
+
+}
+@*Head Slayt*@
+<div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-wrap="true">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="4" aria-label="Slide 4"></button>
+
+
+    </div>
+    <div class="carousel-inner m-0">
+
+        @if (Model != null && Model.Count > 0)
+        {
+            int index = 0;
+            var top5Product = Model.OrderByDescending(x => x.LikeCount).Take(5);
+            @foreach (var product in top5Product)
+            {
+                @if (product.Photos != null && product.Photos.Count > 0)
+                {
+
+                    var activeClass = index == 0 ? "active" : "";
+                    <div class="carousel-item @activeClass">
+                        <form asp-action="Detail" style="width:100%; height:100%;" asp-controller="Product" method="get">
+                            <input type="hidden" name="productId" value="@product?.Id" />
+                            <button type="submit" style="border: none; width:100%; height:100%; background: none; padding: 0;">
+                                <img src="@product?.Photos.First()" class="rounded-3 shadow " style="width:100%; height:100%; object-fit:cover;" alt="@product?.Name" />
+                            </button>
+                        </form>
+
+
+                        <form asp-action="Detail" asp-controller="Product" method="get">
+                            <div class="container">
+                                <div class="carousel-caption text-start">
+                                    <h2>@product?.Name</h2>
+                                    <p>@product?.ProductDetail.Neighborhood.Name / @product?.ProductDetail.Neighborhood.District.Name / @product?.ProductDetail?.Neighborhood?.District?.City?.Name  </p>
+                                    <p>@product?.Ada / @product?.Parcel</p>
+                                    <input type="hidden" name="productId" value="@product?.Id" />
+
+                                    <p><button class="btn btn-lg btn-primary">Detaylar</button></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    index++;
+
+                }
+            }
+        }
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+@* Top 3 favorite product in circle style *@
+<div class="container marketing">
+
+    <div class="row">
+
+        @if (Model != null)
+        {
+            var top3Product = Model.OrderByDescending(p => p.LikeCount).Take(3);
+
+            @foreach (var product in top3Product)
+            {
+
+                <div class="col-lg-4">
+                    <form asp-action="Detail" asp-controller="Product" method="get">
+                        <input type="hidden" name="productId" value="@product?.Id" />
+
+                        <button type="submit" style="border: none; background: none; padding: 0;">
+                            <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false" viewBox="0 0 140 140">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#777" />
+                                <text x="50%" y="50%" dy=".3em"></text>
+                                @if (product?.Photos?.FirstOrDefault() != null)
+                                {
+                                    <image href="@product.Photos.First()" width="140" height="140" style="object-fit: cover;" />
+                                }
+                            </svg>
+                        </button>
+                    </form>
+                    <h2>@product?.Category.Name</h2>
+                    <p>@product?.ProductDetail.Neighborhood.Name / @product?.ProductDetail.Neighborhood.District.Name / @product?.ProductDetail?.Neighborhood?.District?.City?.Name  <br /> @product?.Ada Ada - @product?.Parcel Parsel </p>
+                    @{
+                        var totalPrice = product?.UnitPriceM2 * (decimal)product?.M2;
+                    }
+                    <p><small style="font-size:9px;">@product?.UnitPriceM2.ToString("0.00") m2 - @product?.UnitPriceM2.ToString("C") -></small>@totalPrice?.ToString("C")</p>
+                    <form asp-action="Detail" asp-controller="Product" method="get">
+                        <input type="hidden" name="productId" value="@product?.Id" />
+
+                        <p><button class="btn btn-lg btn-primary">Detaylar &raquo;</button></p>
+
+                    </form>
+                </div>
+            }
+        }
+    </div>
+
+</div>
+
+<hr class="mt-2">
+<!--All Products -->
+<div class="container marketing " style="margin:0 5px 0 5px">
+    @if (Model != null)
+    {
+        var i = 0;
+        @foreach (var product in Model)
+        {
+
+            var totalPrice = product?.UnitPriceM2 * (decimal)product?.M2;
+
+            var likedProduct = likedProducts?.FirstOrDefault(x => x.UserId == loggedUserId && x.ProductId == product.Id);
+
+            i++;
+            if (i % 2 == 0)
+            {
+                <div class="row featurette">
+                    <div class="col-md-7" style="align-content:center">
+                       
+                        
+                        <form asp-action="Detail" asp-controller="Product" method="get">
+                            <input type="hidden" name="productId" value="@product?.Id" />
+
+                            <h2 class="mt-3">@product?.ProductDetail?.Neighborhood?.District?.City?.Name <span class="text-muted">@product?.Category.Name</span></h2>
+                            <p class="lead">@product?.Name</p>
+                            <p class="lead">@product?.Description</p>
+
+                            <p><small style="font-size:9px;">@product?.UnitPriceM2.ToString("0.00") m2 - @product?.UnitPriceM2.ToString("C") -></small>@totalPrice?.ToString("C")</p>
+                            <input type="hidden" name="productId" value="@product?.Id" />
+                            <p><button class="btn btn-lg btn-primary">Detaylar &raquo;</button></p>
+
+
+                        </form>
+
+                        @if (loggedUserId != 0 && loggedUserId != null)
+                        {
+                            <form asp-action="Index" asp-controller="Comment" method="post">
+                                <input type="hidden" name="productId" value="@product?.Id" />
+                                <input type="hidden" name="userId" value="@loggedUserId" />
+                                <div class="rate fs-5 rate-yellow mb-3 product" data-product-id=@product?.Id>
+                                    
+                                    <input name="Scrol" class="rating" type="radio" id="star1-@product?.Id" value="1" required>
+                                    <input name="Scrol" class="rating" type="radio" id="star2-@product?.Id" value="2" required>
+                                    <input name="Scrol" class="rating" type="radio" id="star3-@product?.Id" value="3" required>
+                                    <input name="Scrol" class="rating" type="radio" id="star4-@product?.Id" value="4" required>
+                                    <input name="Scrol" class="rating" type="radio" id="star5-@product?.Id" value="5" required>
+                                    <input name="" class="yorum" type="radio" id="yorum-@product?.Id" value="Yorumlar" required>
+
+
+                                    <div class="stars" style="display:inline">
+                                        <label for="star1-@product?.Id" class="bi bi-star"></label>
+                                        <label for="star2-@product?.Id" class="bi bi-star"></label>
+                                        <label for="star3-@product?.Id" class="bi bi-star"></label>
+                                        <label for="star4-@product?.Id" class="bi bi-star"></label>
+                                        <label for="star5-@product?.Id" class="bi bi-star"></label>
+                                        <label for="yorum-@product?.Id" class="bi bi-chat ms-2" style="color:black">Yorumlar</label>
+
+                                    </div>
+
+                                   <div class="comment mb-3 " style="display:none">
+
+                                        <h4 class="text-capitalize fs-4 fw-normal  m-2" style="color:black" >Ürünü Değerlendirin</h4>
+
+                                        <div class="form-floating mb-3">
+                                            <textarea name="Description" class="form-control" placeholder="Lütfen ürünü değerledirin" id="floatingTextarea" style="height: 100px;"  required></textarea>
+                                            <label for="floatingTextarea " style="color:black">Yorumunuz</label>
+                                            <input type="submit" class="btn btn-outline-primary m-2" value="Gönder">
+                                        </div>
+                                        
+                                   </div>
+                                   <div class="commentsRead mb-3 " style="display:none">
+
+                                            @if (Comments != null)
+                                             {
+                                                    var commentProduct = Comments.Any(x=>x.ProductId==product.Id);
+                                                    if (commentProduct)
+                                                    {
+                                                         foreach (var comment in ViewBag.Comments)
+                                                         {
+                                                                    if (comment.ProductId == product?.Id)
+                                                                    {
+                                                                         <div class="card border-0 shadow-sm mb-3">
+                                                                                    <div class="card-body">
+                                                                                        <h4>Yorumlar</h4>
+                                                                                        <span class="rate-yellow">
+                                                        
+                                                                                            @for (int x = 0; x < comment.Scor; x++)
+                                                                                            {
+                                                                                                <small class="bi bi-star-fill"></small>
+                                                                                            }
+                                                                                        </span>
+                                                                                        <p>@comment.Description </p>
+                                                                                        <div class="text-muted fs-6 mb-3">
+                                                                           
+                                                                                                    @(loggedUserName + ", " + comment.CommentDate.ToString("dd-MM-yyyy"))
+                                                                            
+                                                                      
+                                                                                        </div>
+
+                                                               
+                                                                                    </div>
+                                                                           </div>
+                                                                    }
+                                               
+                                                         }
+                                                    } else
+                                                    {
+                                                     <p>Bur ürün için henüz yorum yapılmamıştır.</p>
+                                                    }
+                                           
+                                             }
+                                        </div>
+                                
+                                </div>
+                               
+
+                            </form>
+                        }
+
+
+                    </div>
+                    <div class="col-md-5 order-md-2">
+                        <div class="image-container">
+                            <!-- Görsel -->
+                            <a asp-action="Detail" asp-controller="Product" asp-route-productId="@product?.Id" style="display: block; width: 100%; height: 100%;">
+                                <svg class="AllProducts-image bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     role="img" aria-label="Placeholder: 250x250"
+                                     preserveAspectRatio="xMidYMid slice" fill="none" focusable="false">
+                                    @if (product?.Photos?.FirstOrDefault() != null)
+                                    {
+                                        <image href="@product.Photos.First()" style="height:100%; object-fit:cover;" />
+                                    }
+                                </svg>
+                            </a>
+                            <!-- Like Button -->
+                            @if (loggedUserId != 0 && loggedUserId != null)
+                            {
+                                <!-- Kullanıcı giriş yapmış -->
+                                <form class="like-form" asp-action="LikeProduct" asp-controller="Product" method="post">
+                                    <input name="productId" value="@product?.Id" hidden />
+                                    <input name="userId" value="@loggedUserId" hidden />
+                                    @if (likedProduct != null)
+                                    {
+                                        <!-- Ürün beğenilmiş -->
+                                        <button class="like-button liked">
+                                            <i class="fa-solid fa-heart"></i>
+                                            <span class="like-count">@product?.LikeCount</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <!-- Ürün beğenilmemiş -->
+                                        <button class="like-button">
+                                            <i class="fa-regular fa-heart"></i>
+                                            <span class="like-count">@product?.LikeCount</span>
+                                        </button>
+                                    }
+
+                                </form>
+                            }
+                            else
+                            {
+                                <!-- Kullanıcı giriş yapmamış -->
+                                <form class="like-form" asp-action="Login" asp-controller="Account" method="get">
+                                    <button class="like-button">
+                                        <i class="fa-regular fa-heart"></i>
+                                        <span class="like-count">@product?.LikeCount</span>
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="m-1">
+
+            }
+            else
+            {
+                <div class="row featurette">
+                    <div class="col-md-7 order-md-2" style="align-content:center">
+
+                        <form asp-action="Detail" asp-controller="Product" method="get">
+                            <input type="hidden" name="productId" value="@product?.Id" />
+
+                            <h2 class="mt-3">@product?.ProductDetail?.Neighborhood?.District?.City?.Name <span class="text-muted">@product?.Category.Name</span></h2>
+                            <p class="lead">@product?.Name</p>
+                            <p class="lead">@product?.Description</p>
+
+                            <p><small style="font-size:9px;">@product?.UnitPriceM2.ToString("0.00") m2 - @product?.UnitPriceM2.ToString("C") -></small>@totalPrice?.ToString("C")</p>
+                            <input type="hidden" name="productId" value="@product?.Id" />
+                            <p><button class="btn btn-lg btn-primary">Detaylar &raquo;</button></p>
+
+
+                        </form>
+                       
+                        @if (loggedUserId != 0 && loggedUserId != null)
+                        {
+                            <form asp-action="Index" asp-controller="Comment" method="post">
+                                <input type="hidden" name="productId" value="@product?.Id" />
+                                <input type="hidden" name="userId" value="@loggedUserId" />
+                                <div class="rate fs-5 rate-yellow mb-3 product" data-product-id=@product?.Id>
+                                    
+                                    <input name="Scrol" class="rating" type="radio" id="star1-@product?.Id" value="1" required>
+                                    <input name="Scrol" class="rating" type="radio" id="star2-@product?.Id" value="2" required>
+                                    <input name="Scrol" class="rating" type="radio" id="star3-@product?.Id" value="3" required>
+                                    <input name="Scrol" class="rating" type="radio" id="star4-@product?.Id" value="4" required>
+                                    <input name="Scrol" class="rating" type="radio" id="star5-@product?.Id" value="5" required>
+                                    <input name="" class="yorum" type="radio" id="yorum-@product?.Id" value="Yorumlar" required>
+
+
+                                    <div class="stars" style="display:inline">
+                                        <label for="star1-@product?.Id" class="bi bi-star"></label>
+                                        <label for="star2-@product?.Id" class="bi bi-star"></label>
+                                        <label for="star3-@product?.Id" class="bi bi-star"></label>
+                                        <label for="star4-@product?.Id" class="bi bi-star"></label>
+                                        <label for="star5-@product?.Id" class="bi bi-star"></label>
+                                        <label for="yorum-@product?.Id" class="bi bi-chat ms-2" style="color:black">Yorumlar</label>
+
+                                    </div>
+
+                                   <div class="comment mb-3 " style="display:none">
+
+                                        <h4 class="text-capitalize fs-4 fw-normal  m-2" style="color:black" >Ürünü Değerlendirin</h4>
+
+                                        <div class="form-floating mb-3">
+                                            <textarea name="Description" class="form-control" placeholder="Lütfen ürünü değerledirin" id="floatingTextarea" style="height: 100px;"  required></textarea>
+                                            <label for="floatingTextarea " style="color:black">Yorumunuz</label>
+                                            <input type="submit" class="btn btn-outline-primary m-2" value="Gönder">
+                                        </div>
+                                        
+                                   </div>
+                                   <div class="commentsRead mb-3 " style="display:none">
+
+                                             @if (Comments != null)
+                                             {
+                                                    var commentProduct = Comments.Any(x=>x.ProductId==product.Id);
+                                                    if (commentProduct)
+                                                    {
+                                                         foreach (var comment in ViewBag.Comments)
+                                                         {
+                                                                    if (comment.ProductId == product?.Id)
+                                                                    {
+                                                                         <div class="card border-0 shadow-sm mb-3">
+                                                                                    <div class="card-body">
+                                                                                        <h4>Yorumlar</h4>
+                                                                                        <span class="rate-yellow">
+                                                        
+                                                                                            @for (int x = 0; x < comment.Scor; x++)
+                                                                                            {
+                                                                                                <small class="bi bi-star-fill"></small>
+                                                                                            }
+                                                                                        </span>
+                                                                                        <p>@comment.Description </p>
+                                                                                        <div class="text-muted fs-6 mb-3">
+                                                                           
+                                                                                                    @(loggedUserName + ", " + comment.CommentDate.ToString("dd-MM-yyyy"))
+                                                                            
+                                                                      
+                                                                                        </div>
+
+                                                               
+                                                                                    </div>
+                                                                           </div>
+                                                                    }
+                                               
+                                                         }
+                                                    } else
+                                                    {
+                                                     <p>Bur ürün için henüz yorum yapılmamıştır.</p>
+                                                    }
+                                           
+                                             }
+                                            
+                                        </div>
+                                
+                                </div>
+                               
+
+                            </form>
+                        }
+
+
+
+
+                    </div>
+                    <div class="col-md-5">
+                        <div class="image-container">
+                            <!-- Görsel -->
+                            <a asp-action="Detail" asp-controller="Product" asp-route-productId="@product?.Id" style="display: block; width: 100%; height: 100%;">
+                                <svg class="AllProducts-image bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     role="img" aria-label="Placeholder: 250x250"
+                                     preserveAspectRatio="xMidYMid slice" fill="none" focusable="false">
+                                    @if (product?.Photos?.FirstOrDefault() != null)
+                                    {
+                                        <image href="@product.Photos.First()" style="height:100%; width:100%; object-fit:cover;" />
+                                    }
+                                </svg>
+                            </a>
+                            <!-- Like Button -->
+                            @if (loggedUserId != 0 && loggedUserId != null)
+                            {
+                                <!-- Kullanıcı giriş yapmış -->
+                                <form class="like-form" asp-action="LikeProduct" asp-controller="Product" method="post">
+                                    <input name="productId" value="@product?.Id" hidden />
+                                    <input name="userId" value="@loggedUserId" hidden />
+                                    @if (likedProduct != null)
+                                    {
+                                        <!-- Ürün beğenilmiş -->
+                                        <button class="like-button liked">
+                                            <i class="fa-solid fa-heart"></i>
+                                            <span class="like-count">@product?.LikeCount</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <!-- Ürün beğenilmemiş -->
+                                        <button class="like-button">
+                                            <i class="fa-regular fa-heart"></i>
+                                            <span class="like-count">@product?.LikeCount</span>
+                                        </button>
+                                    }
+                                </form>
+                            }
+                            else
+                            {
+                                <!-- Kullanıcı giriş yapmamış -->
+                                <form class="like-form" asp-action="Login" asp-controller="Account" method="get">
+                                    <button class="like-button">
+                                        <i class="fa-regular fa-heart"></i>
+                                        <span class="like-count">@product?.LikeCount</span>
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="m-1">
+            }
+
+        }
+    }
+</div>
+
+<script>
+// Sayfa yüklenmeden önce scroll pozisyonunu kaydet
+window.addEventListener("beforeunload", function () {
+    localStorage.setItem("scrollPosition", window.scrollY);
+});
+
+// Sayfa yüklendiğinde scroll pozisyonunu geri yükle
+window.addEventListener("load", function () {
+    const scrollPosition = localStorage.getItem("scrollPosition");
+    if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition));
+        localStorage.removeItem("scrollPosition");
+    }
+});
+
+// Carousel yapılandırması
+$(document).ready(function () {
+    var myCarousel = new bootstrap.Carousel(document.querySelector('#carouselExample'), {
+        interval: 3000,  // Her slayt için bekleme süresi (milisaniye)
+        wrap: true,      // Başa dönmeyi etkinleştir
+        ride: "carousel" // Otomatik slayt geçişi
+    });
+
+    // Yıldızlara tıklama işlevi
+    $("input.rating").on("click", function () {
+        var container = $(this).closest(".product"); // Tıklanan ürünün konteynırını bul
+       console.log(container.attr("id"));
+        var stars = container.find(".stars label"); // Yalnızca bu ürünün yıldızlarını seç
+        
+        var detail=container.find(".comment ")
+        detail.css("display","block")
+        var ratingValue = parseInt($(this).val(), 10); // Seçilen yıldız değerini al ve tamsayıya çevir
+
+        // Tüm yıldızları varsayılan duruma getir
+        stars.removeClass("bi-star-fill").addClass("bi-star");
+
+        // Seçilen yıldızlara kadar olanları doldur
+        stars.each(function (index) {
+            if (index < ratingValue) {
+                $(this).removeClass("bi-star").addClass("bi-star-fill");
+            }
+        });
+    });
+
+    // Yorumlar butonuna tıklama işlevi
+    $("input.yorum").on("click", function () {
+        console.log("Tıklama algılandı!"); // Test için
+
+        // Tıklanan 'commentsRead' öğesinin üst div'ini bul
+        var container = $(this).closest(".product");
+        console.log(container.attr("id"));
+        var commentDiv = container.find(".commentsRead");
+        console.log(commentDiv.attr("class"));
+                 commentDiv.css("display","block")
+        
+    });
+});
+
+</script>
+

@@ -11,8 +11,8 @@ namespace BLL.Dtos
     {
         public string? Name { get; set; }
         public int? CountryId { get; set; }
-        public CountryDto? CountryDto { get; set; }
-        public List<DistrictDto>? DistrictDtos { get; set; }
+        public CountryDto? Country { get; set; }
+        public List<DistrictDto>? Districts { get; set; }
 
     }
 }

@@ -1,20 +1,23 @@
-﻿<link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+﻿@model UserRoleViewModel
+<link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
 
-<div class="container">
-    <div class="py-3 text-center d-flex justify-content-center  min-vh-100">
-       
-        <h2>Kullanıcı Rolleri Kayıt Formu</h2>
-        <p class="lead">Lütfen bilgileri eksiksiz giriniz.</p>
-    </div>
-    <div class="row g-5 justify-content-center">
 
-        <div class="col-md-6 col-lg-12">
-            <h4 class="mb-3">Kullanıcı Rol Bilgileri</h4>
-            <form class="needs-validation" asp-action="Create" asp-controller="UserRole" method="post">
+<div class="container d-flex justify-content-center min-vh-100" style="align-items:center;">
+    <form class="py-3 needs-validation" asp-action="Create" asp-controller="UserRole" method="post" enctype="multipart/form-data">
+        <div class=" text-center">
+
+            <h2>Kullanıcı Rolleri Kayıt Formu</h2>
+            <p class="lead">Lütfen bilgileri eksiksiz giriniz.</p>
+        </div>
+        <div class="row g-5 justify-content-center">
+
+            <div class="col-md-6 col-lg-12">
+                <h4 class="mb-3">Kullanıcı Rol Bilgileri</h4>
+
                 <div class="row g-3">
                     <div class="col-lg-12 col-sm-6">
                         <label for="Role" class="form-label">Rolün Ünvanı</label>
-                        <input type="text" class="form-control" name="Role" placeholder="" required>
+                        <input type="text" class="form-control" name="userRoleViewModel.Role" placeholder="" required>
                         <div class="invalid-feedback">
                             Bu alan zorunludur.
                         </div>
@@ -23,13 +26,12 @@
                 <div class="row g-3">
                     <div class="col-lg-12 col-sm-6">
                         <label for="Description" class="form-label">Açıklama</label>
-                        <input type="text" class="form-control" name="Description" placeholder="" >
-                       
+                        <input type="text" class="form-control" name="userRoleViewModel.Description" placeholder="">
+
                     </div>
                 </div>
-                <button class="w-100 btn btn-primary btn-lg col-lg-12 col-sm-6 mt-3 " style="margin-top:5px;" type="submit">Kaydet</button>
-
-            </form>
+            </div>
         </div>
-    </div>
+        <button class="w-100 btn btn-primary btn-lg col-lg-12 col-sm-6 mt-3 " style="margin-top:5px;" type="submit">Kaydet</button>
+    </form>
 </div>

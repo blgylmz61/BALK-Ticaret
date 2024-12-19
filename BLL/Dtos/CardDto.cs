@@ -11,14 +11,11 @@ namespace BLL.Dtos
     public class CardDto : BaseEntityDto
     {
         public string CardHolder { get; set; }
-
         public string CardNumber { get; set; }
-
         public DateTime ExpiryDate { get; set; }
-
         public string Cvv { get; set; }
         public int UserId { get; set; }
-        public UserDto UserDto { get; set; }
+        public UserDto User { get; set; }
         public DateTime CreatedAt { get; set; }
 
     }

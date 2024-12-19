@@ -11,7 +11,7 @@ namespace BLL.Dtos
     {
         public string Name { get; set; }
 
-        public List<ProductDto> ProductDtos { get; set; }
+        public List<ProductDto> Products { get; set; }
 
     }
 }

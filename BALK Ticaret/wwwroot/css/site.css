@@ -25,12 +25,12 @@ body {
 }
 
 .btn-primary {
-    font-size: 17px;
-    color: #fff;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: #7239EA;
-    border-color: #7239EA;
+    font-size: 17px !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    background-color: #7239EA !important;
+    border-color: #7239EA !important;
 }
 
     .btn-primary:hover {
@@ -42,9 +42,10 @@ body {
         border-color: #7239EA !important;
     }
 
-.form-icon{
-    display:inline;
-    float:inline-end;
+
+.form-icon {
+    display: inline;
+    float: inline-end;
 }
 .form-icon btn{
     

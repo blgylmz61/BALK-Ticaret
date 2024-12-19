@@ -13,6 +13,9 @@ namespace DAL.Entites
         public int ProductId { get; set; }
         public Product Product { get; set; }
         public string Description { get; set; }
-        public int Scor { get; set; }
+        public int Scor { get; set; } = 0;
+
+        public DateTime CommentDate { get; set; }
+
     }
 }

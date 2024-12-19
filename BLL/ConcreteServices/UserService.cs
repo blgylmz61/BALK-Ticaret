@@ -77,16 +77,41 @@ namespace BLL.ConcreteServices
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task<UserDto> GetUserWithDetail(int userDetailId)
+        public async Task<UserDto> GetUserWithDetail(int userId)
         {
-            var user = await _userRepository.GetWithIncludeAsync(x => x.UserDetailId == userDetailId, u => u.UserDetail, u => u.UserRole);
+            var user = await _userRepository.GetWithIncludeAsync(
+                x => x.Id == userId,
+                u => u.UserDetail,
+                u => u.UserRole,
+                u=>u.Cards,
+                u=>u.UserDetail.Country,
+                u => u.UserDetail.City,
+                u => u.UserDetail.District);
             return _mapper.Map<UserDto>(user);
+        }
+        public async Task<List<UserDto>> GetAllUserWithDetail()
+        {
+            var users = await _userRepository.GetAllWithIncludeAsync(
+                x =>true, 
+                u => u.UserDetail, 
+                u => u.UserRole, 
+                u => u.Cards,
+                u => u.UserDetail.Country, 
+                u => u.UserDetail.City, 
+                u => u.UserDetail.District,
+                u => u.UserDetail.Gender);
+            
+            return _mapper.Map<List<UserDto>>(users);
         }
 
         public async Task<UserDto> Login(string username, string password)
         {
-            var users = await _userRepository.GetAllAsync();
-            var user = users.FirstOrDefault(x => x.Username == username && x.Password == password);
+            var user = await _userRepository.GetWithIncludeAsync(
+                x => x.Username == username && x.Password == password,
+                u => u.UserDetail,
+                u => u.UserRole,
+                u => u.Cards); ;
+            
             return _mapper.Map<UserDto>(user);
         }
 

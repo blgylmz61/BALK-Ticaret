@@ -24,15 +24,15 @@ namespace BALK_Ticaret.Models
         public int UserRoleId { get; set; }
         public int UserDetailId { get; set; }
 
-        public UserRoleViewModel UserRoleViewModel { get; set; }
+        public UserRoleViewModel UserRole { get; set; }
  
-        public UserDetailViewModel? UserDetailViewModel { get; set; }
+        public UserDetailViewModel? UserDetail { get; set; }
      
-        public List<ProductLikeViewModel>? ProductLikeViewModels { get; set; }
+        public List<ProductLikeViewModel>? ProductLikes { get; set; }
        
-        public CartViewModel ?CartViewModel { get; set; }
-        public List<OrderViewModel> ?OrderViewModels { get; set; }
-        public List<CardViewModel> CardViewModels { get; set; }
+        public CartViewModel ?Cart { get; set; }
+        public List<OrderViewModel> ?Orders { get; set; }
+        public List<CardViewModel> Cards { get; set; }
        
 
 

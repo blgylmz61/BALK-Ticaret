@@ -6,13 +6,13 @@
         <div class="py-5 text-center">
             <!-- Profil resmi -->
             <a class="text-decoration-none" aria-expanded="false">
-                <img src="~/img/@(ViewBag?.UserDetail?.Photo??"profileimg.png")" alt="Profil Resmi" width="70" height="70" class="rounded-circle">
+                <img src="~/img/@(Model?.UserDetail?.Photo??"profileimg.png")" alt="Profil Resmi" width="70" height="70" class="rounded-circle">
             </a>
             <div class="display:inline">
                 <label for="fileUpload" id="fileUploadPhoto" class="upload-icon" style="cursor: pointer;">
                     <i class="fa-solid fa-plus"></i>
                 </label>
-                <input type="file" id="fileUpload" name="userViewModel.userDetailViewModel.PhotoUrl"   hidden />
+                <input type="file" id="fileUpload" name="userViewModel.UserDetail.PhotoUrl"   hidden />
                 
             </div>
             <!-- Dosya yükleme butonu -->
@@ -29,9 +29,8 @@
                     <!-- Kullanıcı bilgileri -->
                     <div class="col-sm-6">
                         <input name="userViewModel.Id" value="@Model.Id" style="width:none" hidden />
-                        <input name="userViewModel.userDetailViewModel.Id" value="@Model.UserDetailId" style="width:none" hidden />
+                        <input name="userViewModel.UserDetail.Id" value="@Model.UserDetailId" style="width:none" hidden />
                         <input name="userViewModel.UserDetailId" value="@Model.UserDetailId" style="width:none" hidden />
-
                         <label for="Name" class="form-label">İsim</label>
                         <input type="text" class="form-control" id="Name" name="userViewModel.Name" value="@Model.Name" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
@@ -44,14 +43,14 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="@(ViewBag.UserDetail?.TcNo??"")" class="form-label">TC Kimlik No</label>
-                        <input type="text" class="form-control" id="TcNo" name="userViewModel.userDetailViewModel.TcNo" value="@(ViewBag.UserDetail?.TcNo??"")" required>
+                        <label for="@(Model.UserDetail?.TcNo??"")" class="form-label">TC Kimlik No</label>
+                        <input type="text" class="form-control" id="TcNo" name="userViewModel.userDetail.TcNo" value="@(Model.UserDetail?.TcNo??"")" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="@(ViewBag.UserDetail?.Phone??"")" class="form-label">Telefon No</label>
-                        <input type="text" class="form-control" id="Phone" name="userViewModel.userDetailViewModel.Phone" value="@(ViewBag.UserDetail?.Phone??"")" required>
+                        <label for="@(Model.UserDetail?.Phone??"")" class="form-label">Telefon No</label>
+                        <input type="text" class="form-control" id="Phone" name="userViewModel.userDetail.Phone" value="@(Model.UserDetail?.Phone??"")" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
@@ -66,8 +65,8 @@
                         <input type="date"
                                class="form-control"
                                id="Birthday"
-                               name="userViewModel.UserDetailViewModel.Birthday"
-                               value="@(ViewBag.UserDetail?.Birthday != null ? ((DateTime)ViewBag.UserDetail.Birthday).ToString("yyyy-MM-dd") : "")"
+                               name="userViewModel.userDetail.Birthday"
+                               value="@(Model.UserDetail?.Birthday != null ? ((DateTime)Model.UserDetail.Birthday).ToString("yyyy-MM-dd") : "")"
                                required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
@@ -87,21 +86,21 @@
                     <div class="col-12">
                         <input name="userDetailViewModel.UserId" value="@Model.Id" style="width:none" hidden />
 
-                        <label for="@(ViewBag.UserDetail?.Address??"")" class="form-label">Adres</label>
-                        <input type="text" class="form-control" id="address" name="userViewModel.userDetailViewModel.Address" value="@(ViewBag.UserDetail?.Address??" ")" required>
+                        <label for="@(Model.UserDetail?.Address??"")" class="form-label">Adres</label>
+                        <input type="text" class="form-control" id="address" name="userViewModel.userDetail.Address" value="@(Model.UserDetail?.Address??" ")" required>
                         <div class="invalid-feedback">Bu alan zorunludur.</div>
                     </div>
 
                     <div class="col-4">
                         <label for="Country" class="form-label">Ülke <span class="text-muted">(Opsiyonel)</span></label>
 
-                        <select class="form-select" name="userViewModel.UserDetailViewModel.CountryId" required>
+                        <select class="form-select" name="userViewModel.userDetail.CountryId" required>
 
                             <option value="">Ülke Seçiniz...</option>
 
                             @foreach (var country in ViewBag.Countries)
                             {
-                                if ((ViewBag.UserDetail != null) && (country.Id == ViewBag.UserDetail.CountryId))
+                                if ((Model.UserDetail != null) && (country.Id == Model.UserDetail.CountryId))
                                 {
                                     <option value="@country.Id" selected>
                                         @country.Name
@@ -119,13 +118,13 @@
 
                     <div class="col-4">
                         <label for="City" class="form-label">İl <span class="text-muted">(Opsiyonel)</span></label>
-                        <select class="form-select" id="cities" name="userViewModel.UserDetailViewModel.CityId" required>
+                        <select class="form-select" id="cities" name="userViewModel.userDetail.CityId" required>
 
                             <option value="">Şehir Seçiniz...</option>
 
                             @foreach (var city in ViewBag.Cities)
                             {
-                                if ((ViewBag.UserDetail != null) && (city.Id == ViewBag.UserDetail.CityId))
+                                if ((Model.UserDetail != null) && (city.Id == Model.UserDetail.CityId))
                                 {
                                     <option value="@city.Id" selected>
                                         @city.Name
@@ -141,7 +140,7 @@
                     </div>
                     <div class="col-4">
                         <label for="District" class="form-label">İlçe <span class="text-muted">(Opsiyonel)</span></label>
-                        <select class="form-select" id="districts" name="userViewModel.UserDetailViewModel.DistrictId" required>
+                        <select class="form-select" id="districts" name="userViewModel.userDetail.DistrictId" required>
                             <option value="">İlçe Seçiniz...</option>
 
                         </select>
@@ -173,12 +172,12 @@
                     </div>
                     <div class="col-md-6">
                         <label for="Gender" class="form-label">Cinsiyet</label>
-                        <select class="form-select" id="GenderId" name="userViewModel.UserDetailViewModel.GenderId" required>
+                        <select class="form-select" id="GenderId" name="userViewModel.userDetail.GenderId" required>
                             @if (ViewBag.Genders != null)
                             {
                                 @foreach (var option in ViewBag.Genders)
                                 {
-                                    if (ViewBag.UserDetail?.GenderId == option.Id)
+                                    if (Model.UserDetail?.GenderId == option.Id)
                                     {
                                         <option value="@option.Id" selected >@option.Name</option>
                                     }
@@ -195,17 +194,18 @@
             </div>
         </div>
 
-        <button class="w-100 btn btn-primary btn-lg mt-3" type="submit">Kaydet</button>
+        <button class="w-100 btn btn-primary btn-lg mt-3" type="submit">Güncelle</button>
     </form>
 </div>
 <script>
     $(document).ready(function () {
         console.log ("çalışıyor")
         var cityId = $('#cities').val(); // Mevcut cityId değerini al
+        var districtId = '@ViewBag.DistrictId';
         console.log(cityId);
         // Sayfa yüklendiğinde mevcut cityId'ye göre ilçeleri getir
         if (cityId) {
-            loadDistricts(cityId, '@(ViewBag.UserDetail?.DistrictId ?? "")'); // İlk yüklemede cityId ve districtId'yi kullan
+            loadDistricts(cityId, districtId); // İlk yüklemede cityId ve districtId'yi kullan
         }
 
         $('#cities').change(function () {
@@ -216,7 +216,7 @@
         // İlçeleri yükleyen fonksiyon
         function loadDistricts(cityId, selectedDistrictId) {
             $.ajax({
-                url: '@Url.Action("GetDistricts", "Address")',
+                url: '@Url.Action("GetDistricts", "Location")',
                 type: 'GET',
                 data: { cityId: cityId },
                 dataType: 'json',

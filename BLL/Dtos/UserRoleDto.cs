@@ -11,6 +11,6 @@ namespace BLL.Dtos
     {
         public string Role { get; set; }
         public string Description { get; set; }
-        public List<UserDto> UserDtos { get; set; }
+        public List<UserDto> Users { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace BLL.ConcreteServices
             if (userRoleDto != null)
             {
                 userRoleDto.Role=StringHelper.CapitalizeFirstLetterOfEachWord(userRoleDto.Role);
+                userRoleDto.Description=StringHelper.StringToTitleCase(userRoleDto.Description);
                 await _userRoleRepositry.AddAsync(_mapper.Map<UserRole>(userRoleDto));
             }
 
@@ -42,7 +43,7 @@ namespace BLL.ConcreteServices
         public async Task<List<UserRoleDto>> GetUserRoleAll()
         {
             var userRoles = await _userRoleRepositry.GetAllAsync();
-            return _mapper.Map<List<UserRoleDto>>(userRoles);
+            return (_mapper.Map<List<UserRoleDto>>(userRoles));
         }
 
         public async Task<UserRoleDto> GetUserRoleById(int userRoleId)
@@ -60,7 +61,9 @@ namespace BLL.ConcreteServices
         public async Task UpdateUserRole(UserRoleDto userRoleDto)
         {
             var userRole = await _userRoleRepositry.GetByIdAsync(userRoleDto.Id);
-            userRoleDto.Role = userRoleDto.Role;
+            userRoleDto.Role =StringHelper.CapitalizeFirstLetterOfEachWord( userRoleDto.Role);
+            var UserRole=_mapper.Map<UserRole>(userRole);
+            await _userRoleRepositry.UpdateAsync(UserRole);
         }
     }
 }

@@ -1,0 +1,337 @@
+﻿@model ProductViewModel
+<link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+
+<div class="container col-md-6 mt-5">
+    <h2 class="text-center">Taşınmaz Kaydetme</h2>
+    <form asp-action="Create" asp-controller="Product" method="post" enctype="multipart/form-data">
+        @if (Model != null)
+        {
+            <!-- Ensure ID fields are distinct if needed -->
+            <input type="hidden" name="product.Id" value="@Model.Id" />
+            <input type="hidden" name="product.ProductDetailId" value="@Model.ProductDetail?.Id" />
+        }
+
+        <div class="py-5 text-center">
+            <a class="text-decoration-none" aria-expanded="false">
+                <img src="~/img/defaultProduct.jpg" alt="Product Photo" width="70" height="70" class="rounded-circle">
+            </a>
+            <label for="fileUpload" class="upload-icon" style="cursor: pointer;">
+                <i class="fa-solid fa-plus"></i>
+            </label>
+            <input type="file" id="fileUpload" name="product.PhotoUrls" hidden multiple />
+            <h2>Kayıt Formu</h2>
+            <p class="lead">Lütfen bilgileri eksiksiz giriniz.</p>
+        </div>
+
+        
+            <div class="col-lg-12 col-md-8 mb-3">
+                <label for="Name" class="form-label">Taşımaz Tanımı</label>
+                <input type="text" class="form-control" id="Name" name="product.Name" placeholder="Taşınmaz Tanımı"  />
+                <div class="invalid-feedback">Lütfen taşınmaz tanımı giriniz.</div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-4 mb-3">
+                    <label for="Ada" class="form-label">Ada</label>
+                    <input type="text" class="form-control" id="Ada" placeholder="Ada" name="product.Ada"  />
+                    <div class="invalid-feedback">Lütfen taşınmazın ada bilgisini giriniz.</div>
+                </div>
+
+                <div class="col-lg-6 col-md-4">
+                    <label for="Parcel" class="form-label">Parsel</label>
+                    <input type="text" class="form-control" id="Parcel" name="product.Parcel" placeholder="Parsel"  />
+                    <div class="invalid-feedback">Lütfen taşınmazın parsel bilgisini giriniz.</div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-lg-4 col-md-4 mb-3">
+                    <label for="M2" class="form-label">M2</label>
+                    <input type="text" class="form-control" id="M2" name="product.M2" placeholder="M2"  />
+                    <div class="invalid-feedback">Lütfen taşınmazın M2 bilgisini giriniz.</div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 mb-3">
+                    <label for="UnitPriceM2" class="form-label">M2 Birim Fiyatı</label>
+                    <input type="text" class="form-control" id="UnitPriceM2" name="product.UnitPriceM2" placeholder="M2 Birim Fiyatı"  />
+                    <div class="invalid-feedback">Lütfen M2 birim fiyatı giriniz.</div>
+                </div>
+
+                <div class="col-lg-4 col-md-2 mb-3">
+                    <label for="Category" class="form-label">Kategori</label>
+                    <select class="form-select" id="Category" name="product.CategoryId" >
+                        <option value="">Kategori Seçiniz...</option>
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                    <div class="invalid-feedback">Bu alan zorunludur.</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-6 mb-3">
+                    <label for="Description" class="form-label">Açıklama</label>
+                    <input type="text" class="form-control" id="Description" name="product.Description" placeholder="Açıklama"  />
+                    <div class="invalid-feedback">Lütfen açıklama giriniz.</div>
+                </div>
+            </div>
+        </>
+
+        <h2 class="text-center">Detaylar</h2>
+
+        <!-- Kategoriye göre dinamik form alanları -->
+        <div class="row" id="Category1" style="display:none">
+            <div class="col-lg-12 col-md-6 mb-3">
+                <label for="ZoningPlan" class="form-label">İmar Planı</label>
+                <input type="text" class="form-control" id="ZoningPlan" name="product.ProductDetail.ZoningPlan" placeholder="İmar Planı"  />
+                <div class="invalid-feedback">Lütfen taşınmaz tanımını giriniz.</div>
+            </div>
+            <div class="col-lg-12 col-md-6 mb-3">
+                <label for="Type" class="form-label">Nitelik</label>
+                <input type="text" class="form-control" id="Type" name="product.ProductDetail.Type" placeholder="Nitelik"  />
+                <div class="invalid-feedback">Lütfen taşınmaz nitelik bilgisini giriniz.</div>
+            </div>
+        </div>
+        @* Konut *@
+        <div class="row" id="Category2" style="display:none">
+
+            <div class="col-lg-12 col-md-6 mb-3">
+                <label for="Site" class="form-label">Site/Apartman Adı</label>
+                <input type="text" class="form-control" id="Type" name="product.ProductDetail.Site" placeholder="Site/Apartman Adı" >
+                <div class="invalid-feedback">
+                    Lütfen site apartman adı giriniz.
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-6 mb-3">
+                <label for="Type" class="form-label">Konut Tipi</label>
+                <input type="text" class="form-control" id="Type" name="product.ProductDetail.Type" placeholder="Konut Tipi" >
+                <div class="invalid-feedback">
+                    Lütfen Konut tipini giriniz.
+                </div>
+            </div>
+            <div class="row" id="Category2" s>
+                <div class="col-lg-6 col-md-4 mb-3">
+                    <label for="Apartmennt" class="form-label">Blok No</label>
+                    <input type="text" class="form-control" id="Apartmennt" name="product.ProductDetail.Apartmennt" placeholder="Blok No" >
+                    <div class="invalid-feedback">
+                        Lütfen Blok numarasını giriniz..
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-4 mb-3">
+                    <label for="Flat" class="form-label">Kat</label>
+                    <input type="text" class="form-control" id="Flat" name="product.ProductDetail.Flat" placeholder="Kat" >
+                    <div class="invalid-feedback">
+                        Lütfen Konut tipini giriniz.
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-4 mb-3">
+                    <label for="DaireNo" class="form-label">Daire No</label>
+                    <input type="text" class="form-control" id="DaireNo" name="product.ProductDetail.DaireNo" placeholder="Daire Numarası" >
+                    <div class="invalid-feedback">
+                        Lütfen Daire No giriniz.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        @* işyeri *@
+        <div class="row" id="Category3" style="display:none">
+
+            <div class="row">
+                <div class="col-lg-6 col-md-4 mb-3">
+                    <label for="Apartmennt" class="form-label">Blok No</label>
+                    <input type="text" class="form-control" id="Apartmennt" name="product.ProductDetail.Apartmennt" >
+                    <div class="invalid-feedback">
+                        Lütfen Blok numarasını giriniz..
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-4 mb-3">
+                    <label for="Flat" class="form-label">Kat</label>
+                    <input type="text" class="form-control" id="Flat" name="product.ProductDetail.Flat" placeholder="Kat" >
+                    <div class="invalid-feedback">
+                        Lütfen İşyeri Katını giriniz.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-4 mb-3">
+                    <label for="DaireNo" class="form-label">İşyeri No</label>
+                    <input type="text" class="form-control" id="DaireNo" name="product.ProductDetail.DaireNo" placeholder="İşyeri Numarası" >
+                    <div class="invalid-feedback">
+                        Lütfen İşyeri No giriniz.
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 mb-3">
+                    <label for="Type" class="form-label">Konut Tipi</label>
+                    <input type="text" class="form-control" id="Type" name="product.ProductDetail.Type" placeholder="İşyeri Tipi(1+1)" >
+                    <div class="invalid-feedback">
+                        Lütfen Konut tipini giriniz.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-4 mb-3">
+                <label for="PeriodicIncrease" class="form-label">Dönenmsel Artış</label>
+                <input type="text" class="form-control"  id="PeriodicIncrease" name="product.ProductDetail.PeriodicIncrease" placeholder="Vade Farkı oranı %" >
+                <div class="invalid-feedback">
+                    Lütfen Dönemsel Artış bilgisini giriniz..
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-4 mb-3">
+                <label for="MaturityOptions" class="form-label">Vade</label>
+                <input type="text" class="form-control" id="Parcel" name="product.ProductDetail.MaturityOptions" placeholder="Vade"  >
+                <div class="invalid-feedback">
+                    Lütfen Vade bilgisini giriniz..
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-4 mb-3">
+                <label for="Deposit" class="form-label">Peşinat</label>
+                <input type="text" class="form-control" id="Deposit" name="product.ProductDetail.Deposit" >
+                <div class="invalid-feedback">
+                    Lütfen Peşinat bilgisini giriniz..
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-md-4 mb-3">
+                <label for="Country" class="form-label">Ülke</label>
+                <select class="form-select" id="country" name="product.ProductDetail.CountryId" >
+                    <option value="">Ülke Seçiniz...</option>
+                    @foreach (var country in ViewBag.Countries)
+                    {
+                        <option value="@country.Id">@country.Name</option>
+                    }
+                </select>
+                <div class="invalid-feedback">Bu alan zorunludur.</div>
+            </div>
+
+            <div class="col-lg-6 col-md-4 mb-3">
+                <label for="City" class="form-label">İl </label>
+                <select class="form-select" id="city" name="product.ProductDetail.CityId" >
+                    <option value="">Şehir Seçiniz...</option>
+                </select>
+                <div class="invalid-feedback">Bu alan zorunludur.</div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-md-4 mb-3">
+                <label for="District" class="form-label">İlçe </label>
+                <select class="form-select" id="district" name="product.ProductDetail.DistrictId" >
+                    <option value="">İlçe Seçiniz...</option>
+                </select>
+                <div class="invalid-feedback">Bu alan zorunludur.</div>
+            </div>
+
+            <div class="col-lg-6 col-md-4 mb-3">
+                <label for="Neighborhood" class="form-label">Mahalle </label>
+                <select class="form-select" id="neighborhood" name="product.ProductDetail.NeighborhoodId">
+                    <option value="">Mahalle Seçiniz...</option>
+                </select>
+            </div>
+
+        </div>
+
+
+        <button class="w-100 btn btn-primary btn-lg mt-3" type="submit">Kaydet</button>
+    </form>
+</div>
+<script>
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+    $(document).ready(function () {
+        // Category change handler
+        $('#Category').change(function () {
+            var categoryId = $(this).val();
+
+            $('#Category1').hide();
+            $('#Category2').hide();
+            $('#Category3').hide();
+
+            if (categoryId == 1) {
+                $('#Category1').show();
+            } else if (categoryId == 2) {
+                $('#Category2').show();
+            } else if (categoryId == 3) {
+                $('#Category3').show();
+            }
+        });
+
+        // Location-related dynamic dropdowns
+        $('#country').change(function () {
+            var countryId = $(this).val();
+            $('#city').empty().append('<option value="">Şehir Seçiniz...</option>');
+            $('#district').empty().append('<option value="">İlçe Seçiniz...</option>');
+            $('#neighborhood').empty().append('<option value="">Mahalle Seçiniz...</option>');
+
+            if (countryId) {
+                $.getJSON('/Location/GetCities', { countryId: countryId, t: new Date().getTime() }, function (cities) {
+                    console.log(cities); // Debug: Check if cities data is received
+                    $.each(cities, function (i, city) {
+                        $('#city').append('<option value="' + city.id + '">' + city.name + '</option>');
+                    });
+                }).fail(function () {
+                    console.log('Error loading cities');
+                });
+            }
+        });
+
+        $('#city').change(function () {
+            var cityId = $(this).val();
+            $('#district').empty().append('<option value="">İlçe Seçiniz...</option>');
+            $('#neighborhood').empty().append('<option value="">Mahalle Seçiniz...</option>');
+
+            if (cityId) {
+                $.getJSON('/Location/GetDistricts', { cityId: cityId, t: new Date().getTime() }, function (districts) {
+                    console.log(districts); // Debug: Check if districts data is received
+                    $.each(districts, function (i, district) {
+                        $('#district').append('<option value="' + district.id + '">' + district.name + '</option>');
+                    });
+                }).fail(function () {
+                    console.log('Error loading districts');
+                });
+            }
+        });
+
+        $('#district').change(function () {
+            var districtId = $(this).val();
+            $('#neighborhood').empty().append('<option value="">Mahalle Seçiniz...</option>');
+
+            if (districtId) {
+                $.getJSON('/Location/GetNeighborhoods', { districtId: districtId, t: new Date().getTime() }, function (neighborhoods) {
+                    console.log(neighborhoods); // Debug: Check if neighborhoods data is received
+                    $.each(neighborhoods, function (i, neighborhood) {
+                        $('#neighborhood').append('<option value="' + neighborhood.id + '">' + neighborhood.name + '</option>');
+                    });
+                }).fail(function () {
+                    console.log('Error loading neighborhoods');
+                });
+            }
+        });
+    });
+</script>
+

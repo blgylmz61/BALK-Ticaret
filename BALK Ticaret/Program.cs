@@ -20,14 +20,12 @@ builder.Services.AddScoped(typeof(IUserDetailService), typeof(UserDetailService)
 builder.Services.AddScoped(typeof(IUserRoleService), typeof(UserRoleService));
 builder.Services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
 builder.Services.AddScoped(typeof(IGenderService), typeof(GenderService));
-builder.Services.AddScoped(typeof(IAddressService), typeof(AddressService));
+builder.Services.AddScoped(typeof(ILocationService), typeof(LocationService));
 builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
+builder.Services.AddScoped(typeof(IProductDetailService), typeof(ProductDetailService));
 builder.Services.AddScoped(typeof(ICardService), typeof(CardService));
-
-
-
-
-
+builder.Services.AddScoped(typeof(IProductLikeService), typeof(ProductLikeService));
+builder.Services.AddScoped(typeof(ICommentService), typeof(CommentService));
 
 
 

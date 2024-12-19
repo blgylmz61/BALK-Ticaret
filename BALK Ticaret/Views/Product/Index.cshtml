@@ -1,0 +1,165 @@
+﻿@model List<ProductViewModel>
+<!-- DataTables CSS ve JS -->
+<style>
+    /* Tablo başlıklarına stil veriyoruz */
+    #example thead th {
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px;
+    }
+
+    /* Veri satırları için kenarlık ve dolgu */
+    #example tbody tr {
+        border-bottom: 1px solid #ddd;
+         font-size:9px;
+    }
+
+        /* Satırların fareyle üzerine gelindiğinde vurgulanması */
+        #example tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    /* İlk sütunun daha dar olması */
+    #example tbody td:first-child {
+        text-align: center;
+        width: 5%;
+    }
+
+    /* Genel tablo gölgesi */
+    #example {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+       
+    }
+
+    tr img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+        tr img.shadow-effect {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* X, Y, Bulanıklık, Renk */
+            border-radius: 8px; /* Köşeleri yuvarlama, isteğe bağlı */
+            transition: box-shadow 0.3s ease; /* Geçiş efekti */
+        }
+
+            tr img.shadow-effect:hover {
+                box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5); /* Hover durumunda daha belirgin gölge */
+            }
+
+    #tablecont {
+        margin-top: 2px;
+        margin-right: 10px;
+        margin-bottom: 2px;
+        margin-left: 10px;
+    }
+</style>
+
+<div class="row ">
+    <form asp-controller="Product" asp-action="Create" method="get">
+        <button class="btn float-end ms-2 me-5 mt-3" type="submit">
+            <i class="fa-solid fa-plus fa-xl "></i>
+        </button>
+    </form>
+</div>
+<div class="row" id="tablecont">
+    <table id="datatables" class="table table-striped" style="width:100%">
+
+
+
+        <thead>
+            <tr>
+                <th scope="col">Kod</th>
+                <th scope="col">Tür</th>
+                <th scope="col">Fotoğraf</th>
+                <th scope="col">Tanım</th>
+                <th scope="col">Ada</th>
+                <th scope="col">Parsel</th>
+                <th scope="col">M2</th>
+                <th scope="col">Ülke</th>
+                <th scope="col">İl</th>
+                <th scope="col">İlçe</th>
+                <th scope="col">Mahalle</th>
+                <th scope="col">İşlem</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td style="width:3%; font-size:8px;">@product.Code</td>
+                        <td style="width:5%">@product.Category.Name</td>
+
+                        @if (product.Photos != null && product.Photos.Any())
+                        {
+                            <a asp-action="Detail" asp-controller="Product">
+                            <td style="width:5%"><img class="shadow-effect" src="@product.Photos.First()" alt=""></td>
+                            </a>
+                        }
+                        <td style="width:30%">@product?.Name</td>
+                        <td style="width:5%">@product?.Ada</td>
+                        <td style="width:3%">@product?.Parcel </td>
+                        <td style="width:5%">@product?.M2</td>
+                        <td style="width:5%">@product?.ProductDetail?.Neighborhood?.District?.City?.Country?.Name</td>
+                        <td style="width:5%">@product?.ProductDetail?.Neighborhood?.District?.City?.Name</td>
+                        <td style="width:5%">@product?.ProductDetail?.Neighborhood?.District?.Name</td>
+                        <td style="width:5%">@product?.ProductDetail?.Neighborhood?.Name</td>
+                        <td style="width:29%;">
+                            @{
+                                var loggedUserId = Context.Session.GetInt32("UserId");
+                                var isAdminString = Context.Session.GetString("IsAdmin");
+                                bool isAdmin = bool.Parse(isAdminString ?? "false");
+                            }
+                            @if (isAdmin)
+                            {
+                                <button class="btn  btn-outline-success like-button "disabled>
+                                    <i class="fa-regular fa-heart "> <small class="like-count"> @product?.LikeCount</small></i>
+                                </button>
+                              
+                                <form class="form-icon" asp-action="Update" asp-controller="Product" method="get">
+                                    <input name="productId" value="@product?.Id" hidden />
+                                    <button class="btn btn-outline-primary me-2">
+                                        <i class="fa-regular fa-pen-to-square fa-xs"></i>
+                                    </button>
+                                </form>
+                                <form class="form-icon" asp-action="Delete" asp-controller="Product" method="post">
+                                    <input name="productId" value="@product?.Id" hidden />
+                                    <button class="btn btn-outline-danger me-2">
+                                        <i class="fa-regular fa-trash-can fa-xs"></i>
+                                    </button>
+                                </form>
+                            }
+                            <form class="form-icon" asp-action="Detail" asp-controller="Product" method="get">
+                                <input name="productId" value="@product?.Id" hidden />
+                                <button class="btn btn-outline-warning me-2">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+
+    </table>
+
+
+</div>
+
+<script>
+    $(function () {
+        $('#datatables').DataTable({
+
+
+        });
+    });
+</script>
+

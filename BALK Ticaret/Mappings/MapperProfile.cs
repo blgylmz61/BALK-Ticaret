@@ -30,6 +30,8 @@ namespace BALK_Ticaret.Mappings
             CreateMap<CityViewModel, CityDto>().ReverseMap();
             CreateMap<DistrictViewModel, DistrictDto>().ReverseMap();
             CreateMap<CardViewModel, CardDto>().ReverseMap();
+            CreateMap<NeighborhoodViewModel, NeighborhoodDto>().ReverseMap();
+
 
         }
     }

@@ -22,7 +22,7 @@ namespace BALK_Ticaret.Models
         [RegularExpression(@"^\d{3}$", ErrorMessage = "Geçersiz CVV.")]
         public string Cvv { get; set; }
         public int UserId { get; set; }
-        public UserViewModel UserViewModel { get; set; }
+        public UserViewModel User { get; set; }
         public DateTime CreatedAt { get; set; } 
 
     }

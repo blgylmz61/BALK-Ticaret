@@ -13,13 +13,13 @@ namespace BLL.Dtos
         public int OrderId { get; set; }
         public DateTime BillDate { get; set; } // Fatura tarihi
         public decimal Amount { get; set; } // Fatura tutarı
-        public OrderDto OrderDto { get; set; }
+        public OrderDto Order { get; set; }
         public int CountryId { get; set; }
         public int CityId { get; set; }
         public int DistrictId { get; set; }
-        public CountryDto CountryDto { get; set; }
-        public CityDto CityDto { get; set; }
-        public DistrictDto DistrictDto { get; set; }
+        public CountryDto Country { get; set; }
+        public CityDto City { get; set; }
+        public DistrictDto District { get; set; }
 
     }
 }

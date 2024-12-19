@@ -34,12 +34,12 @@ body {
 }
 
     .btn-primary:hover {
-        letter-spacing: 1px;
-        background-color: #fff;
-        color: #7239EA;
-        font-weight: bold;
-        border-radius: 10px;
-        border-color: #7239EA;
+        letter-spacing: 1px !important;
+        background-color: #fff !important;
+        color: #7239EA !important;
+        font-weight: bold !important;
+        border-radius: 10px !important;
+        border-color: #7239EA !important;
     }
 
 .form-icon{

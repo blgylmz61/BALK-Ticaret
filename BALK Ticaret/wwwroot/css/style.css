@@ -35,7 +35,7 @@ body {
     --bs-body-line-height: 1.5;
     --bs-body-color: #8f8f8f;
     --bs-body-color-rgb: 143, 143, 143;
-    --bs-primary: #7239EA;
+    --bs-primary: #7239EA !important;
     --bs-secondary: #6c757d;
     --bs-black: #111;
     --bs-light: #F1F1F0;
